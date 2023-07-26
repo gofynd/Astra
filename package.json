@@ -1,0 +1,42 @@
+{
+    "name": "Astra",
+    "version": "1.0.11",
+    "description": "theme",
+    "main": "index.js",
+    "scripts": {
+        "test": "npm run precommit",
+        "precise-commits": "precise-commits --whitelist \"**/theme/**/*\" --check-only",
+        "prepare": "husky install",
+        "precommit": "npm run precise-commits",
+        "format": "prettier .  --write"
+    },
+    "dependencies": {
+        "@glidejs/glide": "^3.4.1",
+        "@google/model-viewer": "1.5.0",
+        "browser-or-node": "^1.2.1",
+        "hammerjs": "^2.0.8",
+        "values.js": "^2.1.1",
+        "video.js": "7.8.4",
+        "vue-no-ssr": "^1.1.1",
+        "vue-slider-component": "^2.8.16",
+        "vue-video-player": "^5.0.2"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-optional-chaining": "^7.11.0",
+        "@vue/cli-plugin-babel": "^4.5.6",
+        "eslint": "^8.26.0",
+        "eslint-plugin-vue": "^9.7.0",
+        "husky": "^8.0.1",
+        "precise-commits": "^1.0.2",
+        "prettier": "^2.7.1",
+        "vue-svg-loader": "^0.16.0",
+        "less": "3.11.1",
+        "less-loader": "5.0.0",
+        "style-resources-loader": "1.3.3",
+        "@vue/cli": "4.2.2",
+        "@vue/cli-service": "4.4.6",
+        "@vue/cli-service-global": "4.2.2"
+    },
+    "author": "",
+    "license": "ISC"
+}
