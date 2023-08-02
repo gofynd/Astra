@@ -444,7 +444,7 @@ export default {
             finalVal += "-";
           }
           if (!isNaN(Number(val[i]))) {
-            finalVal += (Number(val[i]) * 2.54).toFixed(2); //cm to inches
+            finalVal += (Number(val[i]) * 2.54).toFixed(1); //inches to cm
           } else {
             finalVal += val[i];
           }
@@ -459,7 +459,7 @@ export default {
             finalVal += "-";
           }
           if (!isNaN(Number(val[i]))) {
-            finalVal += (Number(val[i]) * 2.54).toFixed(2); //cm to inches
+            finalVal += (Number(val[i]) / 2.54).toFixed(1); //cm to inches
           } else {
             finalVal += val[i];
           }
