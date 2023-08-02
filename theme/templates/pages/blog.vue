@@ -70,17 +70,6 @@
                   </fdk-link>
                 </div>
                 <div class="blog__info">
-                  <div
-                    class="blog__info--tags flex-align-center font-body"
-                    v-if="blog?.tags.length > 0"
-                  >
-                    <h4>
-                      {{ getBlogTag(blog) }}
-                    </h4>
-                    <h4 v-if="blog?.tags?.[1]">
-                      {{ blog?.tags?.[1] }}
-                    </h4>
-                  </div>
                   <h3
                     class="blog__info--title font-header"
                     :class="{ h1: i % 7 === 0 && isDesktop }"
@@ -89,14 +78,26 @@
                       :link="`/blog/${blog.slug}`"
                       :title="blog.title"
                       :target="'_blank'"
-                      >{{ blog.title }}</fdk-link
                     >
+                      {{ blog.title }}
+                    </fdk-link>
                   </h3>
                   <div
-                    class="blog__info--content b1 font-body"
-                    v-if="i % 7 === 0 && getBlogContent(blog)"
+                    class="blog__info--tags flex-align-center font-body"
+                    v-if="blog?.tags.length > 0"
                   >
-                    {{ getBlogContent(blog) }}
+                    <h5>
+                      {{ getBlogTag(blog) }}
+                    </h5>
+                    <h5 v-if="blog?.tags?.[1]">
+                      {{ blog?.tags?.[1] }}
+                    </h5>
+                  </div>
+                  <div
+                    class="blog__info--content b1 font-body"
+                    v-if="i % 7 === 0 && getBlogContent(blog).content"
+                  >
+                    {{ getBlogContent(blog).content }}
                   </div>
                   <div
                     class="blog__info--meta font-body flex-align-center"
@@ -115,7 +116,7 @@
                     :link="`/blog/${blog.slug}`"
                     :title="blog.title"
                     class="blog__info--button btn-primary font-body"
-                    v-if="i % 7 === 0"
+                    v-if="i % 7 === 0 && isReadMoreBtn(blog)"
                     :target="'_blank'"
                     >READ MORE</fdk-link
                   >
@@ -129,7 +130,7 @@
             <div
               class="blog"
               :class="{ 'blog-lg': i % 7 === 0 }"
-              v-for="(blog, i) in context.blogs?.items"
+              v-for="(blog, i) in getPaginatedBlogItems"
               :key="i"
             >
               <div class="blog__image">
@@ -147,33 +148,36 @@
                 </fdk-link>
               </div>
               <div class="blog__info">
-                <div
-                  class="blog__info--tags flex-align-center font-body"
-                  v-if="blog?.tags.length > 0"
-                >
-                  <h4>
-                    {{ getBlogTag(blog) }}
-                  </h4>
-                  <h4 v-if="blog?.tags?.[1]">
-                    {{ blog?.tags?.[1] }}
-                  </h4>
-                </div>
-                <h3
-                  class="blog__info--title font-header"
-                  :class="{ h1: i % 7 === 0 && isDesktop }"
-                >
-                  <fdk-link
-                    :link="`/blog/${blog.slug}`"
-                    :title="blog.title"
-                    :target="'_blank'"
-                    >{{ blog.title }}</fdk-link
+                <div class="blog__info--title-section">
+                  <h3
+                    class="blog__info--title font-header"
+                    :class="{ h1: i % 7 === 0 && isDesktop }"
                   >
-                </h3>
+                    <fdk-link
+                      :link="`/blog/${blog.slug}`"
+                      :title="blog.title"
+                      :target="'_blank'"
+                    >
+                      {{ blog.title }}
+                    </fdk-link>
+                  </h3>
+                  <div
+                    class="blog__info--tags flex-align-center font-body"
+                    v-if="blog?.tags.length > 0"
+                  >
+                    <h5>
+                      {{ getBlogTag(blog) }}
+                    </h5>
+                    <h5 v-if="blog?.tags?.[1]">
+                      {{ blog?.tags?.[1] }}
+                    </h5>
+                  </div>
+                </div>
                 <div
                   class="blog__info--content b1 font-body"
-                  v-if="i % 7 === 0 && getBlogContent(blog)"
+                  v-if="i % 7 === 0 && getBlogContent(blog).content"
                 >
-                  {{ getBlogContent(blog) }}
+                  {{ getBlogContent(blog).content }}
                 </div>
                 <div
                   class="blog__info--meta font-body flex-align-center"
@@ -192,20 +196,17 @@
                   :link="`/blog/${blog.slug}`"
                   :title="blog.title"
                   class="blog__info--button btn-primary font-body"
-                  v-if="i % 7 === 0"
+                  v-if="i % 7 === 0 && isReadMoreBtn(blog)"
                   :target="'_blank'"
                   >READ MORE</fdk-link
                 >
               </div>
             </div>
           </div>
-          <div
-            class="view-more-btn-wrapper flex-center"
-            v-if="context.blogs?.page?.has_next"
-          >
+          <div class="view-more-btn-wrapper flex-center" v-if="showViewMoreBtn">
             <button
               class="btn-secondary view-more-btn font-body"
-              @click="loadmoreBlogs(fetchBlogs)"
+              @click="loadBlogsSet(fetchBlogs)"
               tabindex="0"
             >
               View More
@@ -293,6 +294,7 @@ export default {
   data() {
     return {
       windowWidth: isBrowser ? window.innerWidth : 0,
+      currentPage: 1,
     };
   },
   computed: {
@@ -327,6 +329,18 @@ export default {
 
       return overlayType === "black_overlay" ? "#000000" : "#ffffff";
     },
+    showViewMoreBtn() {
+      return (
+        this.context.blogs?.page?.has_next ||
+        this.context.blogs?.items?.length !== this.getPaginatedBlogItems?.length
+      );
+    },
+    getPaginatedBlogItems() {
+      if (isBrowser && this.isDesktop) {
+        return this.context.blogs?.items?.slice(0, this.currentPage * 7); // 7 to properly fill grid on blog page
+      }
+      return this.context.blogs?.items;
+    },
   },
   mounted() {
     isBrowser && window.addEventListener("resize", this.onResize);
@@ -341,6 +355,10 @@ export default {
         fetchBlogs({ pageNo: this.context?.blogs?.page?.current + 1 });
       }
     },
+    loadBlogsSet(fetchBlogs) {
+      this.currentPage += 1;
+      this.loadmoreBlogs(fetchBlogs);
+    },
     getFormattedDate(dateString) {
       const date = new Date(dateString);
       const options = { year: "numeric", month: "long", day: "numeric" };
@@ -348,6 +366,8 @@ export default {
     },
     getBlogContent(blog) {
       if (!isBrowser) return "";
+      const maxContentLength = 340;
+
       const parser = new DOMParser();
       const doc = parser.parseFromString(
         blog?.content.find((content) => content.type === "html")?.value || "",
@@ -359,7 +379,17 @@ export default {
           e.remove();
         });
       }
-      return doc.body.textContent;
+      return {
+        shortText:
+          doc.body.textContent.length < maxContentLength ? true : false,
+        content:
+          doc.body.textContent.length > maxContentLength
+            ? `${doc.body.textContent.slice(0, maxContentLength)}...`
+            : doc.body.textContent,
+      };
+    },
+    isReadMoreBtn(blog) {
+      return !this.getBlogContent(blog).shortText;
     },
     getBlogTag(blog) {
       return blog?.tags?.length > 1 ? `${blog?.tags?.[0]},` : blog?.tags?.[0];
@@ -469,7 +499,7 @@ export default {
         @media @desktop {
           margin-bottom: 12px;
         }
-        & > h4 {
+        & > h5 {
           color: @ButtonPrimary;
           text-transform: uppercase;
         }
@@ -477,9 +507,6 @@ export default {
       &--title {
         .text-line-clamp(2);
         margin-bottom: 2px;
-        @media @mobile-up {
-          margin-bottom: 8px;
-        }
       }
       &--meta {
         color: @TextLabel;
@@ -561,7 +588,7 @@ export default {
           }
           &__info {
             flex-grow: 1;
-            &--title,
+            &--title-section,
             &--content,
             &--meta {
               margin-bottom: 32px;

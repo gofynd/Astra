@@ -26,7 +26,7 @@
         <span class="active">{{ context.product_meta.name }}</span>
       </div>
       <div
-        class="mobile__header mobile flex-align-center justify-between"
+        class="mobile__header flex-align-center justify-between"
         :class="{ active: showMobileHeader }"
       >
         <div class="mobile__header--left flex-align-center">
@@ -503,6 +503,19 @@
       ],
       "default": "mob-grid-1",
       "label": "Default grid layout mobile"
+    },
+    {
+      "type": "extension",
+      "id": "extension",
+      "label": "Extension Positions",
+      "info": "Handle extension in these positions",
+      "positions": [
+        {
+          "value": "bottom_left_corner",
+          "text": "Bottom left corner of image"
+        }
+      ],
+      "default": {}
     }
   ]
 }

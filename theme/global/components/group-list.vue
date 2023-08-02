@@ -6,23 +6,7 @@
       :data-card="cardtype"
       :style="getFlex"
     >
-      <template v-if="cardtype === 'PRODUCT'">
-        <group-item-product
-          v-for="(item, index) in cardlist"
-          :card="item"
-          :key="cardtype + index"
-          :global_config="global_config"
-          :listing_price_config="listing_price_config"
-        />
-      </template>
-      <template v-else-if="cardtype === 'GALLERY'">
-        <gallery-item
-          v-for="(item, index) in cardlist"
-          :block="item"
-          :key="'gallery-item' + index"
-        />
-      </template>
-      <template v-else-if="show_only_logo">
+      <template v-if="show_only_logo">
         <group-item-logo
           v-for="(item, index) in cardlist"
           :card="item"
@@ -46,16 +30,12 @@
 
 <script>
 import groupItem from "./group-item.vue";
-import groupItemProduct from "./group-item-product.vue";
 import groupItemLogo from "./group-item-logo.vue";
-import galleryItem from "./gallery-item.vue";
 
 export default {
   name: "groupList",
   components: {
     "group-item": groupItem,
-    "group-item-product": groupItemProduct,
-    "gallery-item": galleryItem,
     "group-item-logo": groupItemLogo,
   },
   props: {

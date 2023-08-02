@@ -84,6 +84,12 @@
           <span>{{ getReviewRatingInfo.avg_ratings }}</span>
           <svg-wrapper :svg_src="'star'" class="rating-icon" />
         </div>
+        <div class="extension">
+          <fdk-extension
+            v-if="getTemplates('bottom_left_corner').length"
+            :templates="getTemplates('bottom_left_corner')"
+          />
+        </div>
       </div>
       <div class="product-desc">
         <h5
@@ -188,6 +194,9 @@ export default {
     };
   },
   methods: {
+    getTemplates(position) {
+      return this.page_config.props?.extension?.[position] || [];
+    },
     getPageConfigValue,
     getGlobalConfigValue,
     onClickWishlist(event, productData, product) {
@@ -379,6 +388,9 @@ export default {
       color: @ThemeAccentD5;
       position: absolute;
     }
+    .extension {
+      position: absolute;
+    }
   }
   .product-desc {
     .product-brand {
@@ -461,6 +473,10 @@ export default {
         right: 16px;
         bottom: 16px;
       }
+      .extension {
+        left: 16px;
+        bottom: 16px;
+      }
     }
   }
   &.mob-grid-2-card {
@@ -475,6 +491,10 @@ export default {
       }
       .review {
         right: 8px;
+        bottom: 8px;
+      }
+      .extension {
+        left: 8px;
         bottom: 8px;
       }
     }
@@ -502,6 +522,10 @@ export default {
           right: 24px;
           bottom: 24px;
         }
+        .extension {
+          left: 24px;
+          bottom: 24px;
+        }
       }
       .product-desc {
         .product-name {
@@ -521,6 +545,10 @@ export default {
         }
         .review {
           right: 12px;
+          bottom: 12px;
+        }
+        .extension {
+          left: 12px;
           bottom: 12px;
         }
       }
@@ -546,6 +574,10 @@ export default {
           right: 24px;
           bottom: 24px;
         }
+        .extension {
+          left: 24px;
+          bottom: 24px;
+        }
       }
       .product-desc {
         .product-name {
@@ -565,6 +597,10 @@ export default {
         }
         .review {
           right: 12px;
+          bottom: 12px;
+        }
+        .extension {
+          left: 12px;
           bottom: 12px;
         }
       }

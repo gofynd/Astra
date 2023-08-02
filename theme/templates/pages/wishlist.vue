@@ -29,6 +29,7 @@
                   :isWishListPage="true"
                   :product="product"
                   :global_config="global_config"
+                  :page_config="page_config"
                 />
               </fdk-link>
             </div>
@@ -157,6 +158,27 @@
   }
 }
 </style>
+
+<settings>
+{
+  "props": [
+    {
+      "type": "extension",
+      "id": "extension",
+      "label": "Extension Positions",
+      "info": "Handle extension in these positions",
+      "positions": [
+        {
+          "value": "bottom_left_corner",
+          "text": "Bottom left corner of image"
+        }
+      ],
+      "default": {}
+    }
+  ]
+}
+</settings>
+
 <script>
 import InfiniteLoader from "../../global/components/infinite-loader.vue";
 import productCard from "./../../global/components/fy-product-card.vue";

@@ -27,7 +27,7 @@
         <span class="active">Products</span>
       </div>
       <div
-        class="mobile__header mobile flex-align-center justify-between"
+        class="mobile__header flex-align-center justify-between"
         :class="{ active: showMobileHeader }"
       >
         <div class="mobile__header--left flex-align-center">
@@ -513,6 +513,19 @@
       "type": "textarea",
       "default": "",
       "label": "Description"
+    },
+    {
+      "type": "extension",
+      "id": "extension",
+      "label": "Extension Positions",
+      "info": "Handle extension in these positions",
+      "positions": [
+        {
+          "value": "bottom_left_corner",
+          "text": "Bottom left corner of image"
+        }
+      ],
+      "default": {}
     }
   ]
 }
