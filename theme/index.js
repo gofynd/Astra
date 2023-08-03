@@ -27,12 +27,6 @@ export default {
   getFaq: () =>
     import(/*webpackChunkName:"extras" */ "./templates/pages/faq.vue"),
 
-
-  getCartReview: () =>
-    import(/* webpackChunkName:"cart" */ "./templates/pages/cart-review.vue"),
-  getCartDelivery: () =>
-    import(/* webpackChunkName:"cart" */ "./templates/pages/cart-delivery.vue"),
-
   getBrands: () =>
     import(/* webpackChunkName:"products" */ "./templates/pages/brands.vue"),
   getCategories: () =>
@@ -68,38 +62,9 @@ export default {
     import(
       /* webpackChunkName:"products-listing" */ "./templates/pages/category-listing.vue"
     ),
-
-  getOrderTrackingDetails: () =>
-    import(
-      /* webpackChunkName:"profile" */ "./templates/pages/order-tracking-details.vue"
-    ),
-  getOrderTracking: () =>
-    import(
-      /* webpackChunkName:"profile" */ "./templates/pages/order-tracking.vue"
-    ),
-  getOrderStatus: () =>
-    import(
-      /* webpackChunkName:"profile" */ "./templates/pages/order-status.vue"
-    ),
-  getOrdersList: () =>
-    import(
-      /* webpackChunkName:"profile" */ "./templates/pages/orders-list.vue"
-    ),
   getWishList: () =>
     import(
       /* webpackChunkName:"profile" */ "./templates/pages/wishlist.vue"
-    ),
-  getProfileDetails: () =>
-    import(
-      /* webpackChunkName:"profile" */ "./templates/pages/profile-details.vue"
-    ),
-  getShipmentDetails: () =>
-    import(
-      /* webpackChunkName:"profile" */ "./templates/pages/shipment-details.vue"
-    ),
-  getProfileAddress: () =>
-    import(
-      /* webpackChunkName:"profile" */ "./templates/pages/profile-address.vue"
     ),
   getCustomTemplates: () => {
     return CustomTemplates;
