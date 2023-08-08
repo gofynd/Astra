@@ -29,20 +29,18 @@
             {{ context.product.name }}
           </h1>
           <div class="product__price">
-            <span
-              class="mrp-label h5"
-              v-if="getPageConfigValue(page_config, 'mrp_label')"
-            >
-              MRP :
-            </span>
-
             <h4 class="product__price--effective">
               {{ getProductPrice("effective") }}
             </h4>
             <span
               class="product__price--marked"
               v-if="getProductPrice('effective') !== getProductPrice('marked')"
-            >
+              ><span
+                class="mrp-label"
+                v-if="getPageConfigValue(page_config, 'mrp_label')"
+              >
+                MRP:
+              </span>
               {{ getProductPrice("marked") }}
             </span>
             <span

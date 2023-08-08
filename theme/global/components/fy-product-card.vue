@@ -195,7 +195,7 @@ export default {
   },
   methods: {
     getTemplates(position) {
-      return this.page_config.props?.extension?.[position] || [];
+      return this.page_config?.props?.extension?.[position] || [];
     },
     getPageConfigValue,
     getGlobalConfigValue,
