@@ -194,7 +194,16 @@
               </template>
 
               <div class="size-cart-container">
-                <div class="size-wrapper" v-click-outside="closeSizeDropdown">
+                <div
+                  v-if="
+                    !(
+                      getProductSizes.length === 1 &&
+                      getPageConfigValue(page_config, 'hide_single_size')
+                    )
+                  "
+                  class="size-wrapper"
+                  v-click-outside="closeSizeDropdown"
+                >
                   <button
                     :class="[
                       'size-button',
@@ -421,6 +430,19 @@
       "type": "checkbox",
       "id": "mandatory_pincode",
       "label": "Mandatory Pincode",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_single_size",
+      "label": "Hide single size",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "preselect_size",
+      "label": "Preselect size",
+      "info": "Applicable only for multiple-size products",
       "default": true
     },
     {
@@ -788,14 +810,21 @@ export default {
     },
     preSizeSelect() {
       const sizes = this.context?.product_meta?.sizes || [];
-      const firstAvailableSize = sizes.find((size) => size.is_available);
+      const preselectSize = !!this.getPageConfigValue(
+        this.page_config,
+        "preselect_size"
+      );
 
-      if (firstAvailableSize) {
-        this.$nextTick(() => {
-          let self = this;
+      if (sizes.length === 1 || (sizes.length > 1 && preselectSize)) {
+        const firstAvailableSize = sizes.find((size) => size.is_available);
 
-          self.onSizeSelection(firstAvailableSize, self.$refs?.sizeContainer);
-        });
+        if (firstAvailableSize) {
+          this.$nextTick(() => {
+            let self = this;
+
+            self.onSizeSelection(firstAvailableSize, self.$refs?.sizeContainer);
+          });
+        }
       }
     },
     focusPincodeInput() {
@@ -860,6 +889,12 @@ export default {
         });
     },
     addProductForCheckout(cart, isBuyNow) {
+      if (!this.selectedSize) {
+        this.toast_message = "Please select the size";
+        this.$refs.pdpToast.showToast("error");
+        return;
+      }
+
       if (this.currentPincodeValue) {
         if (this.showPincodeError) {
           //Can show toast error message here
@@ -1175,6 +1210,7 @@ export default {
     position: relative;
     flex: 1;
     margin-right: 12px;
+    max-width: 33.33%;
 
     @media @tablet {
       margin-right: 8px;
@@ -1200,16 +1236,16 @@ export default {
       }
 
       .selected-size {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        text-align: left;
         color: @TextHeading;
         border-radius: unset;
+        .text-line-clamp();
       }
 
       .dropdown-arrow {
         height: 24px;
         width: 24px;
+        flex: 0 0 24px;
       }
 
       .rotate-arrow {
