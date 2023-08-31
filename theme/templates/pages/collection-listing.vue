@@ -82,6 +82,15 @@
       </div>
       <div class="content-wrapper">
         <sticky-column class="left" v-if="context?.filters.length !== 0">
+          <div class="filter-header flex-align-center justify-between">
+            <h4 class="filter-header__title font-body">FILTERS</h4>
+            <button
+              class="filter-header__reset-btn btn-link font-body"
+              @click="resetFilters"
+            >
+              RESET
+            </button>
+          </div>
           <FilterItem
             v-for="(filter, idx) in context.filters"
             :key="idx + '-desktop' + filter.key.display"
@@ -637,10 +646,7 @@ export default {
     slideDownEventListener() {
       this.active_product_uid = 0;
     },
-    resetFilters(modalReset) {
-      if (this.$refs && this.$refs.mobileActionContainer) {
-        modalReset();
-      }
+    resetFilters() {
       this.$router.push({ query: {} });
     },
     updateSelectedOptions(item, modalUpdate) {
@@ -900,6 +906,14 @@ export default {
       z-index: 1;
       @media @tablet {
         display: none;
+      }
+      .filter-header {
+        padding-bottom: 16px;
+        border-bottom: 1px solid @DividerStokes;
+        margin-bottom: 8px;
+        &__title {
+          .h4(mobile);
+        }
       }
 
       .filter {

@@ -10,6 +10,7 @@ import * as component7 from './hero-video.vue';
 import * as component8 from './image-gallery.vue';
 import * as component9 from './image-slideshow.vue';
 import * as component10 from './testimonials.vue';
+import * as component11 from './trust-marker.vue';
             function exportComponents(components) {
             return [
                 {"name":"application_banner","label":"Application Banner","component": components[0].default},
@@ -22,8 +23,9 @@ import * as component10 from './testimonials.vue';
 {"name":"hero_video","label":"Hero Video","component": components[7].default},
 {"name":"image_gallery","label":"Image Gallery","component": components[8].default},
 {"name":"image_slideshow","label":"Image Slideshow","component": components[9].default},
-{"name":"testimonials","label":"Testimonial","component": components[10].default}
+{"name":"testimonials","label":"Testimonial","component": components[10].default},
+{"name":"trustmarker","label":"Trust Marker","component": components[11].default}
             ];
             }
-            export default exportComponents([component0,component1,component2,component3,component4,component5,component6,component7,component8,component9,component10]);
+            export default exportComponents([component0,component1,component2,component3,component4,component5,component6,component7,component8,component9,component10,component11]);
             

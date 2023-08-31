@@ -81,3 +81,20 @@
     gap: @row-gap @column-gap;
   }
 }
+
+// Topography Mixin
+.h4(@screen) {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: @TextHeading;
+
+  & when (@screen = desktop) {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  & when (@screen = mobile) {
+    font-size: 16px;
+    line-height: 18px;
+  }
+}

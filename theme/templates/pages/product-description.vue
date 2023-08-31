@@ -29,18 +29,32 @@
             {{ context.product.name }}
           </h1>
           <div class="product__price">
+            <span
+              class="mrp-label"
+              style="marginleft: 0"
+              v-if="
+                getPageConfigValue(page_config, 'mrp_label') &&
+                getProductPrice('effective') === getProductPrice('marked')
+              "
+            >
+              MRP:
+            </span>
             <h4 class="product__price--effective">
               {{ getProductPrice("effective") }}
             </h4>
             <span
+              class="mrp-label"
+              v-if="
+                getPageConfigValue(page_config, 'mrp_label') &&
+                getProductPrice('effective') !== getProductPrice('marked')
+              "
+            >
+              MRP:
+            </span>
+            <span
               class="product__price--marked"
               v-if="getProductPrice('effective') !== getProductPrice('marked')"
-              ><span
-                class="mrp-label"
-                v-if="getPageConfigValue(page_config, 'mrp_label')"
-              >
-                MRP:
-              </span>
+            >
               {{ getProductPrice("marked") }}
             </span>
             <span
@@ -193,7 +207,7 @@
                 ></size-guide>
               </template>
 
-              <div class="size-cart-container">
+              <div class="size-cart-container" ref="addToCartBtn1">
                 <div
                   v-if="
                     !(
@@ -255,15 +269,15 @@
                     </li>
                   </ul>
                 </div>
+
                 <fdk-cart class="cart-wrapper">
                   <template slot-scope="cart">
                     <button
                       class="button btn-secondary flex-center add-to-cart font-body"
                       @click="addProductForCheckout(cart, false)"
                       v-if="
-                        context.product_meta &&
-                        context.product_meta.sellable &&
-                        !global_config.props.disable_cart
+                        !getGlobalConfigValue('disable_cart') &&
+                        context?.product_meta?.sellable
                       "
                     >
                       <svg-wrapper :svg_src="'cart'" class="cart-icon" />
@@ -291,14 +305,27 @@
               <button
                 class="button btn-primary buy-now font-body"
                 @click="addProductForCheckout(cart, true)"
-                v-if="context.product_meta && context.product_meta.sellable"
+                v-if="
+                  !getGlobalConfigValue('disable_cart') &&
+                  context?.product_meta?.sellable
+                "
               >
                 <svg-wrapper :svg_src="'buy-now'" class="buy-now__icon" />
                 BUY NOW
               </button>
             </template>
           </fdk-cart>
-
+          <mobile-addtocart
+            v-if="isCartBtnSticky"
+            :context="context"
+            :global_config="global_config"
+            :page_config="page_config"
+            :productSizes="getProductSizes"
+            :getProductPrice="getProductPrice"
+            :onSizeSelection="onSizeSelection"
+            :selectedSize="selectedSize"
+            :addProductForCheckout="addProductForCheckout"
+          />
           <!--Delivery Info-->
           <delivery-info
             ref="deliveryInfo"
@@ -346,6 +373,8 @@
               Item code : {{ context.product.item_code }}
             </li>
           </ul>
+
+          <badges :page_config="page_config" />
 
           <!-- Extension Slot (Below Product Info) -->
           <fdk-extension
@@ -483,6 +512,116 @@
         }
       ],
       "default": {}
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_logo_1",
+      "label": "Badge logo 1",
+      "default": "",
+      "options": {
+        "aspect_ratio": "1:1",
+        "aspect_ratio_strict_check": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "badge_label_1",
+      "label": "Badge label 1",
+      "default": "Badge label 1"
+    },
+    {
+      "type": "url",
+      "id": "badge_url_1",
+      "label": "Badge URL 1",
+      "default": ""
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_logo_2",
+      "label": "Badge logo 2",
+      "default": "",
+      "options": {
+        "aspect_ratio": "1:1",
+        "aspect_ratio_strict_check": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "badge_label_2",
+      "label": "Badge label 2",
+      "default": "Badge label 2"
+    },
+    {
+      "type": "url",
+      "id": "badge_url_2",
+      "label": "Badge URL 2",
+      "default": ""
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_logo_3",
+      "label": "Badge logo 3",
+      "default": "",
+      "options": {
+        "aspect_ratio": "1:1",
+        "aspect_ratio_strict_check": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "badge_label_3",
+      "label": "Badge label 3",
+      "default": "Badge label 3"
+    },
+    {
+      "type": "url",
+      "id": "badge_url_3",
+      "label": "Badge URL 3",
+      "default": ""
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_logo_4",
+      "label": "Badge logo 4",
+      "default": "",
+      "options": {
+        "aspect_ratio": "1:1",
+        "aspect_ratio_strict_check": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "badge_label_4",
+      "label": "Badge label 4",
+      "default": "Badge label 4"
+    },
+    {
+      "type": "url",
+      "id": "badge_url_4",
+      "label": "Badge URL 4",
+      "default": ""
+    },
+    {
+      "type": "image_picker",
+      "id": "badge_logo_5",
+      "label": "Badge logo 5",
+      "default": "",
+      "options": {
+        "aspect_ratio": "1:1",
+        "aspect_ratio_strict_check": true
+      }
+    },
+    {
+      "type": "text",
+      "id": "badge_label_5",
+      "label": "Badge label 5",
+      "default": "Badge label 5"
+    },
+    {
+      "type": "url",
+      "id": "badge_url_5",
+      "label": "Badge URL 5",
+      "default": ""
     }
   ]
 }
@@ -503,11 +642,14 @@ import SvgWrapper from "../../components/common/svg-wrapper.vue";
 import StoreModal from "../../components/product-description/store/store-modal.vue";
 import PdpSkeleton from "../../global/components/skeletons/pdp-skeleton.vue";
 import {
+  getGlobalConfigValue,
   getPageConfigValue,
   getReviewRatingData,
   detectMobileWidth,
   currencyFormat,
 } from "../../helper/utils";
+import Badges from "../../components/product-description/badges.vue";
+import stickyAddtocart from "../../components/product-description/sticky-addtocart.vue";
 
 export default {
   components: {
@@ -520,6 +662,8 @@ export default {
     "pdp-skeleton": PdpSkeleton,
     "store-modal": StoreModal,
     "bread-crumb": BreadCrumb,
+    "mobile-addtocart": stickyAddtocart,
+    badges: Badges,
     toast,
   },
   props: {
@@ -532,6 +676,9 @@ export default {
     },
   },
   mounted() {
+    this.observer = new IntersectionObserver(this.onAddToCartIntersection, {
+      threshold: 1.0,
+    });
     this.isMounted = true;
   },
   watch: {
@@ -558,6 +705,9 @@ export default {
     context: function (newValue) {
       if (!newValue?.product_meta?.loading) {
         this.showShimmer = false;
+        this.$nextTick(() => {
+          this.observer.observe(this.$refs.addToCartBtn1);
+        });
       }
 
       if (
@@ -599,6 +749,8 @@ export default {
       pincodeErrorMsg: "",
       currentPincodeValue: this.context?.user_pincode || "",
       showShimmer: true,
+      observer: null,
+      isCartBtnSticky: false,
     };
   },
   computed: {
@@ -675,6 +827,9 @@ export default {
   methods: {
     getReviewRatingData,
     getPageConfigValue,
+    getGlobalConfigValue(id) {
+      return getGlobalConfigValue(this.global_config, id);
+    },
     closeSizeDropdown() {
       this.showSizeDropdown = false;
     },
@@ -790,7 +945,7 @@ export default {
             this.onPincodeError(err?.message || defaultErrMessage);
           } else {
             this.toast_message = defaultErrMessage;
-            this.$refs.pdpToast.showToast("error");
+            this.$refs.pdpToast.showToast("error", "toast-error");
           }
 
           return false;
@@ -873,7 +1028,7 @@ export default {
                 this.$refs.carousel.$el.style.visibility = "hidden";
               }
               this.toast_message = "Added to Cart!";
-              this.$refs.pdpToast.showToast("success");
+              this.$refs.pdpToast.showToast("success", "add-cart");
             } else {
               this.$router.push(
                 `/cart/checkout?id=${data?.cart?.id}&buy_now=true`
@@ -885,13 +1040,13 @@ export default {
         })
         .catch((err = {}) => {
           this.toast_message = err?.message || "Something went wrong";
-          this.$refs.pdpToast.showToast("error");
+          this.$refs.pdpToast.showToast("error", "toast-error");
         });
     },
     addProductForCheckout(cart, isBuyNow) {
       if (!this.selectedSize) {
         this.toast_message = "Please select the size";
-        this.$refs.pdpToast.showToast("error");
+        this.$refs.pdpToast.showToast("error", "toast-error");
         return;
       }
 
@@ -960,6 +1115,13 @@ export default {
     hidePincodeError() {
       this.showPincodeError = false;
       this.pincodeErrorMsg = "";
+    },
+    onAddToCartIntersection(entries) {
+      if (entries?.[0].isIntersecting) {
+        this.isCartBtnSticky = false;
+      } else {
+        this.isCartBtnSticky = true;
+      }
     },
   },
 };
@@ -1173,6 +1335,12 @@ export default {
           }
           .mrp-label {
             margin-right: 4px;
+            margin-left: 0.25rem;
+            color: var(--textLabel, #7d7676);
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 14px;
+            letter-spacing: -0.02em;
           }
         }
 

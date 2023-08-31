@@ -148,11 +148,17 @@ export const getPriceText = (product, key, options, listing_price_config) => {
       default:
         price =
           priceDetails?.min !== priceDetails?.max
-            ? (currencyFormat(priceDetails?.min, priceDetails.currency_symbol) ||
-              "") +
-            " - " +
-            (currencyFormat(priceDetails?.max, priceDetails.currency_symbol) || "")
-            : currencyFormat(priceDetails?.min, priceDetails.currency_symbol) || "";
+            ? (currencyFormat(
+                priceDetails?.min,
+                priceDetails.currency_symbol
+              ) || "") +
+              " - " +
+              (currencyFormat(
+                priceDetails?.max,
+                priceDetails.currency_symbol
+              ) || "")
+            : currencyFormat(priceDetails?.min, priceDetails.currency_symbol) ||
+              "";
         //not handling this as its the default behaviour of getProductPrice
         break;
     }
@@ -166,9 +172,11 @@ export const getPrice = (product, key) => {
     const priceDetails = product.price?.[key];
 
     return priceDetails?.min !== priceDetails?.max
-      ? (currencyFormat(priceDetails?.min, priceDetails?.currency_symbol) || "") +
-      " - " +
-      (currencyFormat(priceDetails?.max, priceDetails?.currency_symbol) || "")
+      ? (currencyFormat(priceDetails?.min, priceDetails?.currency_symbol) ||
+          "") +
+          " - " +
+          (currencyFormat(priceDetails?.max, priceDetails?.currency_symbol) ||
+            "")
       : currencyFormat(priceDetails?.min, priceDetails?.currency_symbol) || "";
   }
 };
@@ -269,7 +277,7 @@ export const transformImage = (url, key, width) => {
   }
   try {
     let parsedUrl = new URL(updatedUrl);
-    parsedUrl.searchParams.append("dpr", dpr);
+    parsedUrl.searchParams.append("dpr", 1);
     return parsedUrl.toString();
   } catch (error) {
     return updatedUrl;

@@ -38,6 +38,7 @@
                 )}-row-search`,
               ]"
               :global_config="global_config"
+              :screen="'desktop'"
             />
           </div>
           <div

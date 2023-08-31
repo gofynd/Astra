@@ -19,6 +19,7 @@
         :srcset="fallbackSrcset"
         :src="getSrc"
         :alt="alt"
+        loading="lazy"
         @error="onError"
         @load="onLoad"
       />

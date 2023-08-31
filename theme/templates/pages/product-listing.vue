@@ -1,5 +1,5 @@
 <template>
-  <div class="plp-wrapper">
+  <div class="plp-wrapper" ref="plpWrapper" :style="dynamicStyle">
     <!-- <PlpSkeleton v-if="showShimmer" /> -->
     <fdk-loader
       class="loader-ws"
@@ -84,6 +84,15 @@
 
       <div class="content-wrapper">
         <sticky-column class="left" v-if="context?.filters.length !== 0">
+          <div class="filter-header flex-align-center justify-between">
+            <h4 class="filter-header__title font-body">FILTERS</h4>
+            <button
+              class="filter-header__reset-btn btn-link font-body"
+              @click="resetFilters"
+            >
+              RESET
+            </button>
+          </div>
           <FilterItem
             v-for="(filter, idx) in context.filters"
             :key="idx + '-desktop' + filter.key.display"
@@ -591,6 +600,7 @@ export default {
   },
   data() {
     return {
+      topPosition: 0,
       active_product_uid: 0,
       showFilterModal: false,
       showSortByModal: false,
@@ -646,6 +656,10 @@ export default {
       });
       this.scrollToTop();
     }
+    setTimeout(() => {
+      this.topPosition =
+        window.scrollY + this.$refs.plpWrapper.getBoundingClientRect().top;
+    }, 1200);
   },
   methods: {
     getPageConfigValue,
@@ -662,10 +676,7 @@ export default {
     slideDownEventListener() {
       this.active_product_uid = 0;
     },
-    resetFilters(modalReset) {
-      if (this.$refs && this.$refs.mobileActionContainer) {
-        modalReset();
-      }
+    resetFilters() {
       this.$router.push({ query: {} });
     },
     updateSelectedOptions(item, modalUpdate) {
@@ -716,6 +727,8 @@ export default {
     },
     handleScroll: throttle(function () {
       const windowScrollY = isBrowser ? window.scrollY : 0;
+      this.topPosition =
+        window.scrollY + this.$refs.plpWrapper.getBoundingClientRect().top;
       this.scrollY = windowScrollY;
       if (window.innerWidth < 1024) {
         this.showMobileHeader = false;
@@ -743,6 +756,11 @@ export default {
     },
   },
   computed: {
+    dynamicStyle() {
+      return {
+        "--topPosition": `${this.topPosition}px`,
+      };
+    },
     getSearchQuery() {
       const searchQuery = this.$route?.query?.q;
       return searchQuery ? `Results for "${searchQuery}"` : false;
@@ -846,7 +864,7 @@ export default {
     transition: top 0.25s ease-in-out;
 
     &.active {
-      top: var(--headerHeight);
+      top: var(--topPosition, 0);
     }
 
     @media @desktop {
@@ -930,6 +948,14 @@ export default {
       z-index: 1;
       @media @tablet {
         display: none;
+      }
+      .filter-header {
+        padding-bottom: 16px;
+        border-bottom: 1px solid @DividerStokes;
+        margin-bottom: 8px;
+        &__title {
+          .h4(mobile);
+        }
       }
 
       .filter {
@@ -1192,9 +1218,10 @@ export default {
       0px 4px 6px -4px rgba(0, 0, 0, 0.12);
     background-color: @DialogBackground;
     border-radius: 24px;
+    transition: top 0.25s ease-in-out;
     border: none;
     position: fixed;
-    top: 125px;
+    top: calc(var(--topPosition, 0) + 69px);
     right: 50%;
     transform: translateX(50%);
 

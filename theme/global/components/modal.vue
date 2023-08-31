@@ -7,6 +7,7 @@
       @keydown.esc="closeDialog"
       v-bind:class="modalClass"
     >
+      <div class="overlay-modal-container"></div>
       <div class="modal-container" v-click-outside="closeDialog">
         <div class="modal-header">
           <div class="modal-title bold-sm">{{ title }}</div>
@@ -41,6 +42,13 @@
     height: 100%;
   }
 
+  .overlay-modal-container {
+    background-color: @Overlay;
+    opacity: 0.6;
+    inset: 0;
+    position: fixed;
+    z-index: -1;
+  }
   .modal-container {
     padding: 4px 25px;
     background-color: @White;
@@ -82,6 +90,10 @@
 
 .modal-leave-active {
   opacity: 0;
+}
+.inline-svg ::v-deep svg {
+  width: 24px !important;
+  height: 24px !important;
 }
 </style>
 

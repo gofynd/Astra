@@ -108,9 +108,7 @@
                       class="divider"
                       :svg_src="'ellipse'"
                     ></svg-wrapper>
-                    <span>{{
-                      getFormattedDate(blog?.date_meta?.created_on)
-                    }}</span>
+                    <span>{{ getFormattedDate(blog?.publish_date) }}</span>
                   </div>
                   <fdk-link
                     :link="`/blog/${blog.slug}`"
@@ -188,9 +186,7 @@
                     class="divider"
                     :svg_src="'ellipse'"
                   ></svg-wrapper>
-                  <span>{{
-                    getFormattedDate(blog?.date_meta?.created_on)
-                  }}</span>
+                  <span>{{ getFormattedDate(blog?.publish_date) }}</span>
                 </div>
                 <fdk-link
                   :link="`/blog/${blog.slug}`"

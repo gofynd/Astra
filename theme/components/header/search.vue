@@ -73,11 +73,20 @@
                       :sources="[{ width: 56 }]"
                     />
                     <div class="product-title b1 font-body">
-                      {{
-                        product.name.length > 40
-                          ? `${product.name.substring(0, 40)}...`
-                          : product.name
-                      }}
+                      <template v-if="screen === 'mobile'">
+                        {{
+                          product.name.length > 40
+                            ? `${product.name.substring(0, 40)}...`
+                            : product.name
+                        }}
+                      </template>
+                      <template v-else>
+                        {{
+                          product.name.length > 95
+                            ? `${product.name.substring(0, 95)}...`
+                            : product.name
+                        }}
+                      </template>
                     </div>
                   </li>
                 </ul>
@@ -140,6 +149,11 @@ export default {
       default: () => {
         return {};
       },
+    },
+    screen: {
+      type: String,
+      enum: ["mobile", "desktop"],
+      default: "mobile",
     },
   },
   components: {
@@ -305,6 +319,9 @@ export default {
       }
       .product-title {
         color: @TextHeading;
+        @media @desktop {
+          .text-line-clamp();
+        }
       }
     }
     &--button {

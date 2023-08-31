@@ -1,12 +1,23 @@
 <template>
-  <div :class="`b2 toast ${variant}`" :id="id" v-show="displayToast">
-    {{ content }}
+  <div v-show="displayToast" :class="`b2 toast ${variant}`" :id="id">
+    <div class="flex-align-center">
+      <svg-wrapper
+        v-if="toastIcon"
+        :svg_src="toastIcon"
+        class="toast__icon toast__icon--leading"
+      />
+      <span class="b3 toast__message">{{ content }}</span>
+    </div>
   </div>
 </template>
 
 <script>
-module.exports = {
+import SvgWrapper from "./svg-wrapper";
+export default {
   name: "fdk-popup",
+  components: {
+    "svg-wrapper": SvgWrapper,
+  },
   props: {
     content: {
       type: String,
@@ -18,15 +29,18 @@ module.exports = {
   data() {
     return {
       variant: "info",
+      toastIcon: "",
       timer: null,
       displayToast: false,
     };
   },
   methods: {
-    showToast: function showToast(setVariant = "") {
+    showToast: function showToast(setVariant = "", toastIcon = "") {
       if (["success", "error", "info"].includes(setVariant)) {
         this.variant = setVariant;
       }
+
+      this.toastIcon = toastIcon;
 
       if (this.timer) {
         clearTimeout(this.timer);
@@ -45,32 +59,57 @@ module.exports = {
 <style lang="less" scoped>
 .toast {
   visibility: visible;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.18);
-  border-radius: 8px;
-  padding: 19.5px 24px;
+  border-radius: 6px;
+  box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.04);
+  padding: 8px 12px;
   position: fixed;
   z-index: 5;
   left: 50%;
   transform: translateX(-50%);
   top: 25%;
+
+  &__icon {
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+
+    &--leading {
+      margin-right: 12px;
+    }
+  }
 }
 
 .success {
   background-color: @SuccessBackground;
   color: @SuccessText;
-  border-left: 1.4px solid @SuccessText;
+
+  .toast__icon--leading {
+    ::v-deep svg path {
+      stroke: @SuccessText;
+    }
+  }
 }
 
 .error {
   background-color: @ErrorBackground;
   color: @ErrorText;
-  border-left: 1.4px solid @ErrorText;
+
+  .toast__icon--leading {
+    ::v-deep svg path {
+      stroke: @ErrorText;
+    }
+  }
 }
 
 .info {
   background-color: @InformationBackground;
   color: @InformationText;
-  border-left: 1.4px solid @InformationText;
+
+  .toast__icon--leading {
+    ::v-deep svg path {
+      stroke: @InformationText;
+    }
+  }
 }
 
 .show {
