@@ -527,7 +527,7 @@
       "type": "text",
       "id": "badge_label_1",
       "label": "Badge label 1",
-      "default": "Badge label 1"
+      "default": ""
     },
     {
       "type": "url",
@@ -549,7 +549,7 @@
       "type": "text",
       "id": "badge_label_2",
       "label": "Badge label 2",
-      "default": "Badge label 2"
+      "default": ""
     },
     {
       "type": "url",
@@ -571,7 +571,7 @@
       "type": "text",
       "id": "badge_label_3",
       "label": "Badge label 3",
-      "default": "Badge label 3"
+      "default": ""
     },
     {
       "type": "url",
@@ -593,7 +593,7 @@
       "type": "text",
       "id": "badge_label_4",
       "label": "Badge label 4",
-      "default": "Badge label 4"
+      "default": ""
     },
     {
       "type": "url",
@@ -615,7 +615,7 @@
       "type": "text",
       "id": "badge_label_5",
       "label": "Badge label 5",
-      "default": "Badge label 5"
+      "default": ""
     },
     {
       "type": "url",
