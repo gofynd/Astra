@@ -140,7 +140,6 @@
                           { breakpoint: { max: 768 }, width: 60 },
                           { breakpoint: { max: 480 }, width: 60 },
                         ]"
-                        :showSkeleton="true"
                       />
                     </div>
                     <span class="font-body">{{ card?.name }}</span>

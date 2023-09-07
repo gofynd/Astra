@@ -57,6 +57,11 @@
         <div class="badge out-of-stock" v-if="!product.sellable">
           <span class="text font-body caption-normal">Out of stock</span>
         </div>
+        <div class="badge" v-else-if="product.teaser_tag">
+          <span class="text font-body caption-normal">{{
+            product.teaser_tag.substring(0, 14)
+          }}</span>
+        </div>
         <div
           class="badge sale"
           v-else-if="
@@ -66,16 +71,6 @@
           "
         >
           <span class="text font-body caption-normal">Sale</span>
-        </div>
-        <div class="badge" v-else-if="product.teaser_tag">
-          <span class="text font-body caption-normal">{{
-            product.teaser_tag.substring(0, 14)
-          }}</span>
-        </div>
-        <div class="badge tag" v-else-if="product.tags?.[0]">
-          <span class="text font-body caption-normal">{{
-            product.tags?.[0].substring(0, 14)
-          }}</span>
         </div>
         <div
           class="review caption-semi-bold font-body"

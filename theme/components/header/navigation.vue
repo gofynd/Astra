@@ -732,6 +732,7 @@ export default {
           .column-gap(24px);
         }
         .social-icon {
+          position: static !important;
           .icon {
             fill: @TextHeading;
             width: 20px;

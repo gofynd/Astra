@@ -30,6 +30,7 @@
           <div class="card-img" :data-cardtype="'COLLECTIONS'">
             <fdk-link :action="card?.action" class="font-body button-font">
               <emerge-image
+                v-if="showCollectionImage"
                 :src="card?.banners?.portrait?.url"
                 :aspect-ratio="0.8"
                 :mobileAspectRatio="0.8"
@@ -93,6 +94,7 @@
               <div class="card-img" :data-cardtype="'COLLECTIONS'">
                 <fdk-link :action="card?.action" class="font-body button-font">
                   <emerge-image
+                    v-if="showCollectionImage"
                     :src="card?.banners?.portrait?.url"
                     :aspect-ratio="0.8"
                     :mobileAspectRatio="0.8"
@@ -111,8 +113,8 @@
                         width: 416,
                       },
                       {
-                        breakpoint: { max: 480 },
-                        width: 266,
+                        breakpoint: { max: 767 },
+                        width: 300,
                       },
                     ]"
                   />
@@ -307,6 +309,8 @@ export default {
       isLoading: false,
       windowWidth: isBrowser ? window.innerWidth : 0,
       isMounted: false,
+      collectObserver: null,
+      showCollectionImage: false,
       glideOptions: {
         startAt: 0,
         focusAt: 0,
@@ -437,6 +441,14 @@ export default {
     getGapValue(gap) {
       return this.collectionsForScrollView?.length === 1 ? 0 : gap;
     },
+    handleIntersection(entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.showCollectionImage = true;
+          this.collectObserver.unobserve(this.$el);
+        }
+      });
+    },
   },
   computed: {
     showStackedView() {
@@ -535,11 +547,22 @@ export default {
   mounted() {
     this.isMounted = true;
     isBrowser && window.addEventListener("resize", this.onResize);
+    if (isBrowser) {
+      this.collectObserver = new IntersectionObserver(this.handleIntersection, {
+        root: null,
+        rootMargin: "0px",
+        threshold: [0, 1],
+      });
+      this.collectObserver.observe(this.$el);
+    }
     this.fetchCollections();
   },
 
   beforeDestroy() {
     isBrowser && window.removeEventListener("resize", this.onResize);
+    if (this.collectObserver && isBrowser) {
+      this.collectObserver.disconnect();
+    }
   },
 };
 </script>

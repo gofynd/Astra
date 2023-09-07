@@ -8,7 +8,6 @@
         <fdk-link :link="getSectionPropValue(block, 'redirect_link')">
           <emerge-image
             :src="isMobile ? getMobileImage(block) : getDesktopImage(block)"
-            :showSkeleton="true"
             :aspectRatio="16 / 5"
             :mobileAspectRatio="3 / 4"
             :sources="[
@@ -25,13 +24,13 @@
                 width: 850,
               },
               {
-                breakpoint: { max: 768 },
+                breakpoint: { min: 768 },
                 width: 780,
                 url: getMobileImage(block),
               },
               {
-                breakpoint: { max: 480 },
-                width: 480,
+                breakpoint: { max: 767 },
+                width: 380,
                 url: getMobileImage(block),
               },
             ]"

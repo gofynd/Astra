@@ -309,6 +309,7 @@ export default {
       .social {
         .column-gap(8px);
         .social-icon {
+          position: static !important;
           /deep/ svg {
             width: 28px;
             height: 28px;

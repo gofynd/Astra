@@ -186,6 +186,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 15;
   @media screen and (min-width: 481px) {
     display: none;
   }

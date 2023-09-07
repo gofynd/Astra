@@ -82,6 +82,7 @@
               :key="index"
             >
               <ProductCard
+                v-if="showFeatImage"
                 :product="product"
                 :mobileAspectRatio="getProductImgAspectRatio"
                 :aspectRatio="getProductImgAspectRatio"
@@ -109,6 +110,7 @@
                 :key="index"
               >
                 <ProductCard
+                  v-if="showFeatImage"
                   :product="product"
                   :mobileAspectRatio="getProductImgAspectRatio"
                   :aspectRatio="getProductImgAspectRatio"
@@ -126,7 +128,6 @@
                 <emerge-image
                   class="streach emerge-image"
                   :src="require('../assets/images/placeholder1X1.png')"
-                  :showSkeleton="true"
                   :sources="[
                     { breakpoint: { min: 1024 }, width: 350 },
                     { breakpoint: { min: 768 }, width: 250 },
@@ -309,6 +310,17 @@ export default {
   mounted() {
     this.isMounted = true;
     isBrowser && window.addEventListener("resize", this.onResize);
+    if (isBrowser) {
+      this.featuredObserver = new IntersectionObserver(
+        this.handleIntersection,
+        {
+          root: null,
+          rootMargin: "0px",
+          threshold: [0, 1],
+        }
+      );
+      this.featuredObserver.observe(this.$el);
+    }
     this.getCollectionData();
   },
   data: function () {
@@ -319,6 +331,8 @@ export default {
         require("../assets/images/placeholder9x16.png"),
       windowWidth: isBrowser ? window.innerWidth : 0,
       isMounted: false,
+      featuredObserver: null,
+      showFeatImage: false,
       glideOptions: {
         type: "slider",
         startAt: 0,
@@ -381,6 +395,14 @@ export default {
   methods: {
     getGlobalConfigValue,
     getSectionPropValue,
+    handleIntersection(entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.showFeatImage = true;
+          this.featuredObserver.unobserve(this.$el);
+        }
+      });
+    },
     getCollectionData() {
       const collectionSlug = this.getSectionPropValue(
         this.settings,
@@ -624,6 +646,9 @@ export default {
   },
   beforeDestroy() {
     isBrowser && window.removeEventListener("resize", this.onResize);
+    if (this.featuredObserver && isBrowser) {
+      this.featuredObserver.disconnect();
+    }
   },
 };
 </script>

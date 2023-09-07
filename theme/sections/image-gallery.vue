@@ -1,81 +1,83 @@
 <template>
-  <div
-    :style="dynamicStyles"
-    v-if="imagesForStackedView.length > 0 || imagesForScrollView.length > 0"
-  >
-    <div class="title-block">
-      <h2
-        class="section-heading font-header"
-        v-if="
-          getSectionPropValue(settings, 'title') ||
-          getSectionPropValue(settings, 'cta_text')
-        "
-      >
-        {{ getSectionPropValue(settings, "title") }}
-      </h2>
-      <p
-        class="description b2 font-body"
-        v-if="getSectionPropValue(settings, 'cta_text')"
-      >
-        {{ getSectionPropValue(settings, "cta_text") }}
-      </p>
-    </div>
-    <template v-if="getGallery.length">
-      <div
-        v-if="showStackedView"
-        class="image-grid"
-        :class="{ 'single-item': imagesForStackedView.length == 1 }"
-        :style="`--per_row:${getSectionPropValue(
-          settings,
-          'item_count'
-        )};--brand-item:${getWidthByCount || 1}`"
-      >
-        <div v-for="(block, index) in imagesForStackedView" :key="index">
-          <fdk-link :link="getSectionPropValue(block, 'link')">
-            <emerge-image
-              class="gallery-item"
-              :src="getImageSrc(block)"
-              :sources="[
-                { breakpoint: { min: 1024 }, width: 450 },
-                { breakpoint: { min: 768 }, width: 250 },
-                { breakpoint: { min: 481 }, width: 200 },
-                { breakpoint: { max: 390 }, width: 200 },
-              ]"
-            >
-            </emerge-image>
-          </fdk-link>
+  <div>
+    <div
+      :style="dynamicStyles"
+      v-if="imagesForStackedView.length > 0 || imagesForScrollView.length > 0"
+    >
+      <div class="title-block">
+        <h2
+          class="section-heading font-header"
+          v-if="
+            getSectionPropValue(settings, 'title') ||
+            getSectionPropValue(settings, 'cta_text')
+          "
+        >
+          {{ getSectionPropValue(settings, "title") }}
+        </h2>
+        <p
+          class="description b2 font-body"
+          v-if="getSectionPropValue(settings, 'cta_text')"
+        >
+          {{ getSectionPropValue(settings, "cta_text") }}
+        </p>
+      </div>
+      <template v-if="getGallery.length">
+        <div
+          v-if="showStackedView"
+          class="image-grid"
+          :class="{ 'single-item': imagesForStackedView.length == 1 }"
+          :style="`--per_row:${getSectionPropValue(
+            settings,
+            'item_count'
+          )};--brand-item:${getWidthByCount || 1}`"
+        >
+          <div v-for="(block, index) in imagesForStackedView" :key="index">
+            <fdk-link :link="getSectionPropValue(block, 'link')">
+              <emerge-image
+                class="gallery-item"
+                :src="getImageSrc(block)"
+                :sources="[
+                  { breakpoint: { min: 1024 }, width: 450 },
+                  { breakpoint: { min: 768 }, width: 250 },
+                  { breakpoint: { min: 481 }, width: 200 },
+                  { breakpoint: { max: 390 }, width: 200 },
+                ]"
+              >
+              </emerge-image>
+            </fdk-link>
+          </div>
         </div>
-      </div>
-      <div v-else-if="showScrollView" class="sliderView">
-        <no-ssr>
-          <GlideCarousel
-            :glideOptions="glideOptions"
-            hasArrows
-            hasBullets
-            showPerPage
-          >
-            <GlideSlide
-              v-for="(block, index) in imagesForScrollView"
-              :key="index"
+        <div v-else-if="showScrollView" class="sliderView">
+          <no-ssr>
+            <GlideCarousel
+              :glideOptions="glideOptions"
+              hasArrows
+              hasBullets
+              showPerPage
             >
-              <fdk-link :link="getSectionPropValue(block, 'link')">
-                <emerge-image
-                  class="gallery-item"
-                  :src="getImageSrc(block)"
-                  :sources="[
-                    { breakpoint: { min: 1024 }, width: 450 },
-                    { breakpoint: { min: 768 }, width: 250 },
-                    { breakpoint: { min: 481 }, width: 200 },
-                    { breakpoint: { max: 390 }, width: 200 },
-                  ]"
-                ></emerge-image>
-              </fdk-link>
-            </GlideSlide>
-          </GlideCarousel>
-        </no-ssr>
-      </div>
-    </template>
-    <!-- <template v-else>
+              <GlideSlide
+                v-for="(block, index) in imagesForScrollView"
+                :key="index"
+              >
+                <fdk-link :link="getSectionPropValue(block, 'link')">
+                  <emerge-image
+                    v-if="showImages"
+                    class="gallery-item"
+                    :src="getImageSrc(block)"
+                    :sources="[
+                      { breakpoint: { min: 1024 }, width: 450 },
+                      { breakpoint: { min: 768 }, width: 250 },
+                      { breakpoint: { min: 481 }, width: 200 },
+                      { breakpoint: { max: 390 }, width: 200 },
+                    ]"
+                  ></emerge-image>
+                </fdk-link>
+              </GlideSlide>
+            </GlideCarousel>
+          </no-ssr>
+        </div>
+      </template>
+      <!-- <template v-else>
       <placeholder-items
         :count="getSectionPropValue(settings, 'item_count') * 2"
         :items_per_row="getSectionPropValue(settings, 'item_count')"
@@ -84,6 +86,7 @@
         :layout="getSectionPropValue(settings, 'desktop_layout')"
       />
     </template> -->
+    </div>
   </div>
 </template>
 <!-- #region  -->
@@ -332,6 +335,14 @@ export default {
   mounted() {
     this.isMounted = true;
     isBrowser && window.addEventListener("resize", this.onResize);
+    if (isBrowser) {
+      this.observerImg = new IntersectionObserver(this.handleIntersection, {
+        root: null,
+        rootMargin: "0px",
+        threshold: [0, 1],
+      });
+      this.observerImg.observe(this.$el);
+    }
   },
   computed: {
     getGallery() {
@@ -414,6 +425,8 @@ export default {
     return {
       isMounted: false,
       windowWidth: isBrowser ? window.innerWidth : 0,
+      observer: null,
+      showImages: false,
       glideOptions: {
         type: "slider",
         startAt: 0,
@@ -477,10 +490,21 @@ export default {
         require("../assets/images/placeholder1X1.png")
       );
     },
+    handleIntersection(entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.showImages = true;
+          this.observerImg.unobserve(this.$el);
+        }
+      });
+    },
   },
 
   beforeDestroy() {
     isBrowser && window.removeEventListener("resize", this.onResize);
+    if (this.observerImg && isBrowser) {
+      this.observerImg.disconnect();
+    }
   },
 };
 </script>

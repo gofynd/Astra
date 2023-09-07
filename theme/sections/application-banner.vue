@@ -22,13 +22,10 @@
             breakpoint: { min: 768 },
             width: 780,
           },
+
           {
-            breakpoint: { min: 481 },
-            width: 600,
-          },
-          {
-            breakpoint: { max: 480 },
-            width: 500,
+            breakpoint: { max: 767 },
+            width: 400,
             url: getMobileImage(),
           },
         ]"
