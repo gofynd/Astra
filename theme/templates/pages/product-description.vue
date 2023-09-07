@@ -30,7 +30,7 @@
           </h1>
           <div class="product__price">
             <span
-              class="mrp-label"
+              class="mrp-label mrp-label--effective"
               style="marginleft: 0"
               v-if="
                 getPageConfigValue(page_config, 'mrp_label') &&
@@ -43,7 +43,7 @@
               {{ getProductPrice("effective") }}
             </h4>
             <span
-              class="mrp-label"
+              class="mrp-label mrp-label--marked"
               v-if="
                 getPageConfigValue(page_config, 'mrp_label') &&
                 getProductPrice('effective') !== getProductPrice('marked')
@@ -1334,13 +1334,17 @@ export default {
             }
           }
           .mrp-label {
-            margin-right: 4px;
-            margin-left: 0.25rem;
             color: var(--textLabel, #7d7676);
             font-weight: 400;
             font-size: 12px;
             line-height: 14px;
             letter-spacing: -0.02em;
+            &--effective {
+              margin-right: 4px;
+            }
+            &--marked {
+              margin-left: 0.25rem;
+            }
           }
         }
 
