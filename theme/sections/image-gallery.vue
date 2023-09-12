@@ -23,7 +23,7 @@
       </div>
       <template v-if="getGallery.length">
         <div
-          v-if="showStackedView"
+          v-if="isMounted && showStackedView"
           class="image-grid"
           :class="{ 'single-item': imagesForStackedView.length == 1 }"
           :style="`--per_row:${getSectionPropValue(
@@ -47,7 +47,7 @@
             </fdk-link>
           </div>
         </div>
-        <div v-else-if="showScrollView" class="sliderView">
+        <div v-else-if="isMounted && showScrollView" class="sliderView">
           <no-ssr>
             <GlideCarousel
               :glideOptions="glideOptions"

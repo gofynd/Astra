@@ -1,5 +1,5 @@
 <template>
-  <div class="badge-wrapper">
+  <div class="badge-wrapper" v-if="getBadgeData.length">
     <template v-for="(badge, index) in getBadgeData">
       <div class="badge-wrapper__item" :key="index">
         <div :class="{ 'badge-wrapper__item--hide': !badge.logo }">
@@ -124,17 +124,20 @@ export default {
       let badgeData = [];
       let totalBadges = 5;
       const pageConfig = this.page_config?.props || {};
-
       if (Object.keys(pageConfig).length) {
         for (let i = 1; i <= totalBadges; i++) {
-          badgeData.push({
-            logo: pageConfig[`badge_logo_${i}`],
-            label: pageConfig[`badge_label_${i}`],
-            url: pageConfig[`badge_url_${i}`],
-          });
+          if (
+            pageConfig[`badge_logo_${i}`] !== "" ||
+            pageConfig[`badge_label_${i}`] !== ""
+          ) {
+            badgeData.push({
+              logo: pageConfig[`badge_logo_${i}`],
+              label: pageConfig[`badge_label_${i}`],
+              url: pageConfig[`badge_url_${i}`],
+            });
+          }
         }
       }
-
       return badgeData;
     },
   },
