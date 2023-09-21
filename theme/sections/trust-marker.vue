@@ -321,6 +321,7 @@ export default {
   @media @tablet {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
   @media @mobile {
     display: flex;
@@ -340,6 +341,7 @@ export default {
   @media @mobile {
     flex-direction: row;
     gap: 16px;
+    padding: 16px;
   }
 }
 .Trust-marker-image {
@@ -348,6 +350,7 @@ export default {
   @media @mobile {
     width: 64px;
     height: 64px;
+    flex: 0 0 64px;
   }
 }
 
@@ -363,11 +366,17 @@ export default {
   padding-top: 8px;
   text-transform: capitalize;
   color: @TextHeading;
+  @media @tablet {
+    padding-top: 16px;
+    font-size: 14px;
+    letter-spacing: -0.28px;
+  }
   @media @mobile {
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.28px;
     padding-top: 0px;
+    text-align: left;
   }
 }
 
@@ -375,13 +384,15 @@ export default {
   color: var(--text-headings, #261a1a);
   text-align: center;
   padding-top: 8px;
+  @media @mobile {
+    text-align: left;
+  }
 }
 
 /deep/ .glide__slides {
   -webkit-mask-image: -webkit-radial-gradient(white, black); //safari fix
 }
 /deep/ .image-wrapper {
-  border-radius: @ImageRadius;
   -webkit-mask-image: -webkit-radial-gradient(white, black); //safari fix
 }
 /deep/ .glide--swipeable {

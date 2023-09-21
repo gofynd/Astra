@@ -98,3 +98,19 @@
     line-height: 18px;
   }
 }
+
+.b2(@screen) {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: @TextBody;
+
+  & when (@screen = desktop) {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  & when (@screen = mobile) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}

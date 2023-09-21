@@ -212,7 +212,9 @@
                   v-if="
                     !(
                       getProductSizes.length === 1 &&
-                      getPageConfigValue(page_config, 'hide_single_size')
+                      getPageConfigValue(page_config, 'hide_single_size') &&
+                      storeInfo &&
+                      !storeInfo.set
                     )
                   "
                   class="size-wrapper"
@@ -1430,8 +1432,9 @@ export default {
     .size-dropdown {
       position: absolute;
       background-color: @DialogBackground;
-      width: 100%;
-      top: calc(100% + 5px);
+      top: 100%;
+      min-width: 100%;
+      white-space: nowrap;
       border: 1px solid #d4d1d1;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15),
         0px 12px 16px rgba(0, 0, 0, 0.16);

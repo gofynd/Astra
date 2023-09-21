@@ -180,14 +180,9 @@ h5,
 
 .b-small,
 .b2 {
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: -0.02em;
-  color: @TextBody;
+  .b2(mobile);
   @media @desktop {
-    font-size: 14px;
-    line-height: 18px;
+    .b2(desktop);
   }
 }
 

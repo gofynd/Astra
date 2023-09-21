@@ -1,7 +1,7 @@
 <template>
   <div class="glide" ref="glide">
     <div class="glide__track" data-glide-el="track">
-      <div class="glide__slides" :style="dynamicStyles">
+      <div class="glide__slides" ref="glideSlides" :style="dynamicStyles">
         <slot></slot>
       </div>
     </div>
@@ -86,6 +86,9 @@ export default {
       type: Boolean,
       default: true,
     },
+    debug: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -119,10 +122,10 @@ export default {
   },
   mounted() {
     this.initializeComponent();
-
-    if (this.enableObserver) {
-      const observer = new MutationObserver(this.initializeComponent);
-      observer.observe(this.$refs.glide, {
+    const glideType = this.glideOptions?.type ?? "slider";
+    if (this.enableObserver && glideType === "slider") {
+      const observer = new MutationObserver(this.mutationHandler);
+      observer.observe(this.$refs.glideSlides, {
         attributes: false,
         childList: true,
         subtree: false,
@@ -135,6 +138,19 @@ export default {
     this.observer && this.observer.disconnect();
   },
   methods: {
+    mutationHandler(mutationList, observer) {
+      let hasChildlistMutation = false;
+      for (const mutation of mutationList) {
+        if (mutation.type === "childList") {
+          hasChildlistMutation = true;
+          break;
+        }
+      }
+
+      if (hasChildlistMutation) {
+        this.initializeComponent();
+      }
+    },
     cleanupComponent() {
       if (this.carouselHandle) {
         this.carouselHandle.destroy();

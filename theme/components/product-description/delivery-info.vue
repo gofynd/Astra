@@ -39,8 +39,7 @@
         <template
           v-if="
             storeInfo &&
-            deliveryInfo &&
-            deliveryInfo.minDeliveryDate &&
+            getDeliveryDate &&
             !showError &&
             !errMessage &&
             !selectPincodeError &&
@@ -53,12 +52,7 @@
               class="delivery-icon"
             ></svg-wrapper>
             <p class="caption-normal">
-              Will be delivered
-              {{
-                deliveryInfo.minDeliveryDate === deliveryInfo.maxDeliveryDate
-                  ? `on ${deliveryInfo.minDeliveryDate}`
-                  : `between ${deliveryInfo.minDeliveryDate} - ${deliveryInfo.maxDeliveryDate}`
-              }}
+              {{ getDeliveryDate }}
             </p>
           </div>
         </template>
@@ -187,16 +181,11 @@ export default {
       if (this.storeInfo) {
         this.fromPincode = `${this.storeInfo.pincode}`;
         this.toPincode = this.pincode;
-        this.getTatInfo();
       }
-    },
-    deliveryInfo(newValue) {
-      this.deliveryInfo = newValue;
     },
     pincode_value(newVal) {
       this.$emit("changeCurrentPincodeValue", newVal);
       this.$emit("disableSelectPincodeError", false);
-      this.deliveryInfo = {};
 
       const reg = new RegExp(/^(?=.{2,11}$)[a-z0-9]+([ -]?[a-z0-9]+)*$/i);
       if (!reg.test(newVal)) {
@@ -212,41 +201,38 @@ export default {
       toPincode: this.pincode || "",
       fromPincode: "",
       tatInfo: {},
-      deliveryInfo: {},
       isMounted: false,
     };
   },
-  computed: {},
+  computed: {
+    getDeliveryDate() {
+      let options = {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      };
+      const { min, max } = this.storeInfo?.delivery_promise || {};
+      if (!min) {
+        return false;
+      }
+      const dateFormatter = new Intl.DateTimeFormat(undefined, options);
+      const minDate = dateFormatter.format(new Date(min));
+      const maxDate = dateFormatter.format(new Date(max));
+      return `Will be delivered ${
+        min === max ? `on ${minDate}` : `between ${minDate} - ${maxDate}`
+      }`;
+    },
+  },
 
   mounted() {
     this.isMounted = true;
     this.pincode_value = this.pincode;
-    if (!this.showUserPincodeModal && !isEmpty(this.storeInfo))
-      this.getTatInfo();
   },
   methods: {
     onNewPincodeReceived(obj) {
       let newPincode = obj.pincode_value;
       this.toPincode = newPincode;
       this.$emit("pincodeChanged", newPincode);
-    },
-    getTatInfo() {
-      if (this.storeInfo && this.$refs["pdpPincode"] && this.toPincode) {
-        this.tatInfo = {
-          toPincode: this.toPincode,
-          fromPincode: `${this.storeInfo.pincode}`,
-          categoryId: this.id,
-          store_id: this.storeInfo.store.uid,
-        };
-        this.$refs["pdpPincode"]
-          ?.getTat(this.tatInfo)
-          .then((res) => {
-            this.deliveryInfo = res;
-          })
-          .catch((err) => {
-            this.$emit("onPincodeError", err.message);
-          });
-      }
     },
     checkPincode(pincodeAct) {
       this.$emit("disableSelectPincodeError", false);
