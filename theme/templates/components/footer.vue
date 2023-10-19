@@ -5,7 +5,11 @@
         <div class="footer__top--wrapper" v-if="checkFooterDesc">
           <div class="footer__top--info">
             <div class="logo">
-              <img :src="getGlobalConfigValue(global_config, 'logo')" />
+              <img
+                :src="getGlobalConfigValue(global_config, 'logo')"
+                :alt="context.name"
+                loading="lazy"
+              />
             </div>
             <p class="description b1 font-body">
               {{ getGlobalConfigValue(global_config, "footer_description") }}
@@ -95,7 +99,11 @@
           {{ getCopyright }}
         </div>
         <div class="payment-logo">
-          <img :src="getGlobalConfigValue(global_config, 'payments_logo')" />
+          <img
+            :src="getGlobalConfigValue(global_config, 'payments_logo')"
+            alt="Payment Logo"
+            loading="lazy"
+          />
         </div>
       </div>
     </div>

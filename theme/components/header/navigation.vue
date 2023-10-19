@@ -94,7 +94,7 @@
             <img
               class="logo"
               :src="getShopLogoMobile"
-              alt
+              :alt="context.name"
               @click.stop="closeSidebarNav()"
             />
           </fdk-link>

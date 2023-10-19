@@ -36,7 +36,7 @@
                 :sources="[
                   { breakpoint: { min: 769 }, width: 416 },
                   { breakpoint: { max: 768 }, width: 232 },
-                  { breakpoint: { max: 480 }, width: 136 },
+                  { breakpoint: { max: 480 }, width: 336 },
                 ]"
               />
               <div class="flex-justify-center">

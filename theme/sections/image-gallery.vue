@@ -67,8 +67,8 @@
                     :sources="[
                       { breakpoint: { min: 1024 }, width: 450 },
                       { breakpoint: { min: 768 }, width: 250 },
-                      { breakpoint: { min: 481 }, width: 200 },
-                      { breakpoint: { max: 390 }, width: 200 },
+                      { breakpoint: { min: 481 }, width: 480 },
+                      { breakpoint: { max: 390 }, width: 390 },
                     ]"
                   ></emerge-image>
                 </fdk-link>

@@ -50,7 +50,7 @@
                   },
                   {
                     breakpoint: { max: 480 },
-                    width: 266,
+                    width: 480,
                   },
                 ]"
               />
@@ -110,7 +110,7 @@
                       },
                       {
                         breakpoint: { min: 481 },
-                        width: 416,
+                        width: 500,
                       },
                       {
                         breakpoint: { max: 767 },

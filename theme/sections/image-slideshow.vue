@@ -7,7 +7,7 @@
       <glideSlide v-for="(block, index) in getSlides" :key="index">
         <fdk-link :link="getSectionPropValue(block, 'redirect_link')">
           <emerge-image
-            :src="isMobile ? getMobileImage(block) : getDesktopImage(block)"
+            :src="getDesktopImage(block)"
             :aspectRatio="16 / 5"
             :mobileAspectRatio="3 / 4"
             :sources="[
@@ -24,13 +24,22 @@
                 width: 850,
               },
               {
-                breakpoint: { min: 768 },
+                breakpoint: { min: 769 },
                 width: 780,
+              },
+              {
+                breakpoint: { max: 390 },
+                width: 490,
                 url: getMobileImage(block),
               },
               {
-                breakpoint: { max: 767 },
-                width: 380,
+                breakpoint: { max: 480 },
+                width: 580,
+                url: getMobileImage(block),
+              },
+              {
+                breakpoint: { max: 768 },
+                width: 770,
                 url: getMobileImage(block),
               },
             ]"
@@ -148,7 +157,6 @@ export default {
   data: function () {
     return {
       isMounted: false,
-      isMobile: false,
       glideOptions: {
         autoplay: getSectionPropValue(this.settings, "autoplay")
           ? getSectionPropValue(this.settings, "slide_interval") * 1000
@@ -190,9 +198,7 @@ export default {
         : this.settings?.blocks;
     },
   },
-  mounted() {
-    this.isMobile = detectMobileWidth();
-  },
+  mounted() {},
 };
 </script>
 

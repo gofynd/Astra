@@ -33,7 +33,7 @@
           isSidebarNav
         />
         <fdk-link link="/" class="middle flex-align-center">
-          <img class="logo" :src="getShopLogoMobile" alt="Brand Logo" />
+          <img class="logo" :src="getShopLogoMobile" :alt="context.name" />
         </fdk-link>
         <div class="right">
           <i18n-dropdown :context="context" />

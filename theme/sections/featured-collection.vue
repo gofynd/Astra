@@ -19,7 +19,7 @@
           :sources="[
             { breakpoint: { min: 1024 }, width: 700 },
             { breakpoint: { min: 768 }, width: 768 },
-            { breakpoint: { min: 481 }, width: 481 },
+            { breakpoint: { max: 481 }, width: 481 },
             { breakpoint: { max: 390 }, width: 390 },
           ]"
           :aspectRatio="0.8"

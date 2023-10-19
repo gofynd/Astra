@@ -2,14 +2,16 @@
   <div class="pagination">
     <fdk-link
       class="prev"
-      :link="value.has_previous && getPageUrl(value.current - 1)"
+      v-if="value.has_previous"
+      :link="getPageUrl(value.current - 1)"
     >
-      <svg-wrapper
-        class="arrow-icon left-arrow"
-        :class="{ disable: !value.has_previous }"
-        :svg_src="'arrow-down'"
-      />
+      <svg-wrapper class="arrow-icon left-arrow" :svg_src="'arrow-down'" />
     </fdk-link>
+    <svg-wrapper
+      v-else
+      class="arrow-icon left-arrow disable"
+      :svg_src="'arrow-down'"
+    />
     <div class="page-container">
       <fdk-link
         class="page-btn b1 font-body"
@@ -23,14 +25,16 @@
     </div>
     <fdk-link
       class="next"
-      :link="value.has_next && getPageUrl(value.current + 1)"
+      v-if="value.has_next"
+      :link="getPageUrl(value.current + 1)"
     >
-      <svg-wrapper
-        class="arrow-icon right-arrow"
-        :class="{ disable: !value.has_next }"
-        :svg_src="'arrow-down'"
-      />
+      <svg-wrapper class="arrow-icon right-arrow" :svg_src="'arrow-down'" />
     </fdk-link>
+    <svg-wrapper
+      v-else
+      class="arrow-icon right-arrow disable"
+      :svg_src="'arrow-down'"
+    />
   </div>
 </template>
 

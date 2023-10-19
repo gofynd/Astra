@@ -25,7 +25,7 @@
 
           {
             breakpoint: { max: 767 },
-            width: 400,
+            width: 450,
             url: getMobileImage(),
           },
         ]"

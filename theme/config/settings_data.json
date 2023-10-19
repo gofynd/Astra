@@ -22,32 +22,29 @@
         {
           "settings": {
             "props": {
-              "show_info_message": true,
               "gst": false,
-              "staff_selection": true,
-              "enable_customer": false,
-              "enable_guest": false
+              "staff_selection": true
             }
           },
           "page": "cart-landing"
         },
         {
-          "page": "brands",
           "settings": {
             "props": {
               "title": "Brands Landing",
               "logo_only": true,
               "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
             }
-          }
+          },
+          "page": "brands"
         },
         {
-          "page": "product-listing",
           "settings": {
             "props": {
               "hide_brand": true
             }
-          }
+          },
+          "page": "product-listing"
         }
       ],
       "global_config": {
@@ -64,10 +61,6 @@
             "auth": {
               "show_header_auth": true,
               "show_footer_auth": true
-            },
-            "order_tracking": {
-              "show_header": true,
-              "show_footer": true
             },
             "palette": {
               "general_setting": {
@@ -123,6 +116,10 @@
                   "info_text": "#D28F51"
                 }
               }
+            },
+            "order_tracking": {
+              "show_header": true,
+              "show_footer": true
             },
             "extension": {
               "header_top": [],
@@ -633,15 +630,6 @@
         ],
         "value": "home"
       }
-    ]
-  },
-  "information": {
-    "features": [
-      "10 stunning configurable sections",
-      "Revamped Cart and Checkout",
-      "Dual configurable font",
-      "Easily configurable colors",
-      "Faster Page Loading"
     ]
   }
 }

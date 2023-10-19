@@ -18,10 +18,10 @@
         <button
           v-for="(slideIndex, index) in carouselIndexes"
           class="glide__bullet"
-          :id="`=${slideIndex}`"
           :class="{
             'glide__bullet--active': isActiveBullet(slideIndex),
           }"
+          :aria-label="`slide-${slideIndex}`"
           :key="index"
           @click="onBulletClick(slideIndex, index)"
         ></button>

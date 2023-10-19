@@ -16,7 +16,7 @@
       </div>
       <div class="middle logo-wrapper flex-center">
         <fdk-link link="/" class="middle__logo">
-          <img class="logo" :src="getShopLogo" alt="Brand Logo" />
+          <img class="logo" :src="getShopLogo" :alt="context.name" />
         </fdk-link>
       </div>
       <fdk-accounts class="right right__icons">

@@ -182,6 +182,33 @@
                 </div>
               </div>
 
+              <div v-if="isSizeSelectionBlock" class="size-selection">
+                <p class="b2 size-selection__label">
+                  <span>Size :</span>
+                  {{ selectedSize }}
+                </p>
+                <div class="size-selection__wrapper">
+                  <div
+                    v-for="(size, index) in getProductSizes"
+                    :key="index"
+                    class="b2 size-selection__block"
+                    :class="{
+                      'size-selection__block--disable': size.quantity === 0,
+                      'size-selection__block--selectable': size.quantity !== 0,
+                      'size-selection__block--selected':
+                        selectedSize === size.display,
+                    }"
+                    :title="size.display"
+                    @click="onSizeSelection(size, sellerData)"
+                  >
+                    {{ size.display }}
+                    <svg v-if="size.quantity === 0">
+                      <line x1="0" y1="100%" x2="100%" y2="0" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
               <template
                 v-if="getPageConfigValue(page_config, 'show_size_guide')"
               >
@@ -209,14 +236,7 @@
 
               <div class="size-cart-container" ref="addToCartBtn1">
                 <div
-                  v-if="
-                    !(
-                      getProductSizes.length === 1 &&
-                      getPageConfigValue(page_config, 'hide_single_size') &&
-                      storeInfo &&
-                      !storeInfo.set
-                    )
-                  "
+                  v-if="isSizeSelectionDropdown"
                   class="size-wrapper"
                   v-click-outside="closeSizeDropdown"
                 >
@@ -346,6 +366,37 @@
             :errMessage="pincodeErrorMsg"
             @changeCurrentPincodeValue="changeCurrentPincodeValue"
           ></delivery-info>
+          <compare-action-modal
+            v-if="showCompareActionModal"
+            :compare_slugs="context.compare_slugs"
+            :compare_msg="compareMsg"
+            :product_uid="context.product.slug"
+            :global_config="global_config"
+            @hide-compare-action-modal="hideCompareModal"
+            :addProductForCheckout="addProductForCheckout"
+          ></compare-action-modal>
+          <div class="book-appt-n-compare">
+            <!-- <fdk-compare-action
+              v-if="page_config && page_config.props.add_to_compare"
+            >
+              <template slot-scope="compare">
+                <div
+                  class="compare-container compare-text"
+                  @click="
+                    addCompareProducts(compare.addCompare, context.product.slug)
+                  "
+                >
+                  <div class="compare-icon">
+                    <svg-wrapper
+                      :svg_src="'compare-icon'"
+                      class="compare-icon"
+                    ></svg-wrapper>
+                  </div>
+                  <p>Add to Compare</p>
+                </div>
+              </template>
+            </fdk-compare-action> -->
+          </div>
 
           <ul class="product-detail font-body">
             <template
@@ -409,6 +460,7 @@
       "label": "Seller Store Selection",
       "default": true
     },
+   
     {
       "type": "checkbox",
       "id": "show_seller",
@@ -475,6 +527,22 @@
       "label": "Preselect size",
       "info": "Applicable only for multiple-size products",
       "default": true
+    },
+    {
+      "type": "radio",
+      "id": "size_selection_style",
+      "label": "Size selection style",
+      "default": "dropdown",
+      "options": [
+        {
+          "value": "dropdown",
+          "text": "Dropdown style"
+        },
+        {
+          "value": "block",
+          "text": "Block style"
+        }
+      ]
     },
     {
       "type": "checkbox",
@@ -652,6 +720,7 @@ import {
 } from "../../helper/utils";
 import Badges from "../../components/product-description/badges.vue";
 import stickyAddtocart from "../../components/product-description/sticky-addtocart.vue";
+import compareActionModalVue from "./../../global/components/compare-action-modal.vue";
 
 export default {
   components: {
@@ -665,6 +734,7 @@ export default {
     "store-modal": StoreModal,
     "bread-crumb": BreadCrumb,
     "mobile-addtocart": stickyAddtocart,
+    "compare-action-modal": compareActionModalVue,
     badges: Badges,
     toast,
   },
@@ -678,6 +748,7 @@ export default {
     },
   },
   mounted() {
+    console.log("Categories=>", this.context);
     this.observer = new IntersectionObserver(this.onAddToCartIntersection, {
       threshold: 1.0,
     });
@@ -824,6 +895,30 @@ export default {
         this.getPageConfigValue(this.page_config, "show_seller") &&
         this.storeInfoSelected?.store?.name
       );
+    },
+    showSize() {
+      return !(
+        this.getProductSizes.length === 1 &&
+        this.getPageConfigValue(this.page_config, "hide_single_size") &&
+        this.storeInfo &&
+        !this.storeInfo.set
+      );
+    },
+    isSizeSelectionBlock() {
+      const sizeSelectionType = this.getPageConfigValue(
+        this.page_config,
+        "size_selection_style"
+      );
+
+      return sizeSelectionType === "block" && this.showSize;
+    },
+    isSizeSelectionDropdown() {
+      const sizeSelectionType = this.getPageConfigValue(
+        this.page_config,
+        "size_selection_style"
+      );
+
+      return sizeSelectionType === "dropdown" && this.showSize;
     },
   },
   methods: {
@@ -1094,7 +1189,29 @@ export default {
         }
       }
     },
-
+    addCompareProducts(promiseFn, productUid) {
+      if (this.context.compare_slugs.length <= 3) {
+        promiseFn(productUid)
+          .then((res) => {
+            //todo
+          })
+          .catch((err) => {
+            //show error
+            this.compareMsg.title =
+              "Select products from the same category for comparison" ||
+              "Something went wrong";
+            this.showCompareActionModal = true;
+          });
+      } else {
+        //show popup max upto 3
+        this.compareMsg.title = "You can only compare 4 products at a time";
+        this.showCompareActionModal = true;
+      }
+    },
+    hideCompareModal() {
+      this.showCompareActionModal = false;
+      this.compareMsg.title = "";
+    },
     onPincodeChanged(event) {
       this.pincode = event;
       this.sizeClicked(this.$refs?.sizeContainer?.loadSellers);
@@ -1534,6 +1651,29 @@ export default {
   }
 }
 
+.compare-container {
+  display: flex;
+  padding: 12px 32px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  border-radius: 4px;
+  border: 0.8px solid @DividerStokes;
+  color: @ButtonPrimary;
+  background: @ButtonSecondary;
+  margin: 24px 0;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.28px;
+  text-transform: uppercase;
+  cursor: pointer;
+  @media @tablet {
+    margin: 16px 0 32px 0;
+    font-size: 12px;
+    letter-spacing: -0.24px;
+  }
+}
 .mt-2 {
   margin-top: 2rem;
 }
@@ -1601,7 +1741,7 @@ export default {
 }
 
 .bottom-spacing {
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 
   @media @tablet {
     margin-bottom: 32px;
@@ -1614,5 +1754,59 @@ export default {
 
 /deep/ .toast {
   text-transform: unset;
+}
+
+.size-selection {
+  margin: 24px 0;
+
+  &__label {
+    margin-bottom: 12px;
+
+    span {
+      font-weight: bold;
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    .grid-gap(8px);
+  }
+
+  &__block {
+    border-radius: 4px;
+    border: 1px solid @DividerStokes;
+    padding: 6px 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+
+    &--selected {
+      background-color: @ThemeAccent;
+    }
+
+    &--selectable {
+      cursor: pointer;
+    }
+
+    &--disable {
+      cursor: default;
+      color: @TextDisabled;
+    }
+
+    svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+
+      line {
+        stroke: @DividerStokes;
+        stroke-width: 1;
+      }
+    }
+  }
 }
 </style>

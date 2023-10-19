@@ -17,8 +17,8 @@
         :sources="[
           { breakpoint: { min: 1024 }, width: 350 },
           { breakpoint: { min: 768 }, width: 250 },
-          { breakpoint: { min: 481 }, width: 270 },
-          { breakpoint: { max: 390 }, width: 250 },
+          { breakpoint: { min: 481 }, width: 420 },
+          { breakpoint: { max: 390 }, width: 420 },
         ]"
       />
     </div>

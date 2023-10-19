@@ -758,7 +758,7 @@ export default {
   computed: {
     dynamicStyle() {
       return {
-        "--topPosition": `${this.topPosition}px`,
+        "--topPosition": this.topPosition ? `${this.topPosition}px` : "",
       };
     },
     getSearchQuery() {
@@ -864,7 +864,7 @@ export default {
     transition: top 0.25s ease-in-out;
 
     &.active {
-      top: var(--topPosition, 0);
+      top: var(--topPosition, var(--headerHeight));
     }
 
     @media @desktop {
@@ -1221,7 +1221,7 @@ export default {
     transition: top 0.25s ease-in-out;
     border: none;
     position: fixed;
-    top: calc(var(--topPosition, 0) + 69px);
+    top: calc(var(--topPosition, var(--headerHeight)) + 69px);
     right: 50%;
     transform: translateX(50%);
 

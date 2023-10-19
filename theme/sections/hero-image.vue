@@ -1,7 +1,7 @@
 <template>
-  <div class="section-main-container" :style="dynamicStyles" ref="heroImg">
+  <div class="section-main-container" :style="dynamicStyles">
     <emerge-img
-      :src="isMobile ? getMobileUrl() : getDesktopUrl()"
+      :src="getDesktopUrl()"
       :sources="[
         {
           breakpoint: { min: 1400 },
@@ -16,13 +16,22 @@
           width: 850,
         },
         {
-          breakpoint: { min: 768 },
+          breakpoint: { min: 769 },
           width: 780,
+        },
+        {
+          breakpoint: { max: 390 },
+          width: 390,
           url: getMobileUrl(),
         },
         {
-          breakpoint: { max: 767 },
-          width: 380,
+          breakpoint: { max: 480 },
+          width: 500,
+          url: getMobileUrl(),
+        },
+        {
+          breakpoint: { max: 768 },
+          width: 770,
           url: getMobileUrl(),
         },
       ]"
@@ -31,7 +40,6 @@
       class="hero__image"
       :aspectRatio="16 / 9"
       :mobileAspectRatio="9 / 16"
-      v-if="showHeroImages"
     />
     <div class="overlay-items" :style="getOverlayPositionStyles">
       <h1
@@ -298,8 +306,6 @@ export default {
     return {
       isMobile: false,
       windowWidth: isBrowser ? window.innerWidth : 0,
-      heroObserver: null,
-      showHeroImages: false,
     };
   },
 
@@ -320,26 +326,10 @@ export default {
         require("../assets/images/placeholder16x9.png")
       );
     },
-    handleIntersection(entries) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          this.showHeroImages = true;
-          this.heroObserver.unobserve(this.$el);
-        }
-      });
-    },
   },
   mounted() {
     isBrowser && window.addEventListener("resize", this.onResize);
     this.isMobile = detectMobileWidth();
-    if (isBrowser) {
-      this.heroObserver = new IntersectionObserver(this.handleIntersection, {
-        root: null,
-        rootMargin: "0px",
-        threshold: [0, 1],
-      });
-      this.heroObserver.observe(this.$el);
-    }
   },
   computed: {
     getOverlayPositionStyles() {

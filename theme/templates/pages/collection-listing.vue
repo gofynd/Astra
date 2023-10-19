@@ -1,5 +1,5 @@
 <template>
-  <div class="plp-wrapper">
+  <div class="plp-wrapper" ref="plpWrapper" :style="dynamicStyle">
     <fdk-loader
       class="loader-ws"
       v-if="context.loading && (!context.items || context.items.length === 0)"
@@ -590,6 +590,7 @@ export default {
   },
   data() {
     return {
+      topPosition: 0,
       active_product_uid: 0,
       showFilterModal: false,
       showSortByModal: false,
@@ -630,6 +631,10 @@ export default {
       });
       this.scrollToTop();
     }
+    setTimeout(() => {
+      this.topPosition =
+        window.scrollY + this.$refs.plpWrapper.getBoundingClientRect().top;
+    }, 1200);
   },
   methods: {
     getPageConfigValue,
@@ -697,6 +702,8 @@ export default {
     },
     handleScroll: throttle(function () {
       const windowScrollY = isBrowser ? window.scrollY : 0;
+      this.topPosition =
+        window.scrollY + this.$refs.plpWrapper.getBoundingClientRect().top;
       this.scrollY = windowScrollY;
       if (window.innerWidth < 1024) {
         this.showMobileHeader = false;
@@ -724,6 +731,11 @@ export default {
     },
   },
   computed: {
+    dynamicStyle() {
+      return {
+        "--topPosition": this.topPosition ? `${this.topPosition}px` : "",
+      };
+    },
     getProductCount() {
       if (this.context?.product_count === 1) {
         return `${this.context?.product_count} item`;
@@ -822,7 +834,7 @@ export default {
     transition: top 0.25s ease-in-out;
 
     &.active {
-      top: var(--headerHeight);
+      top: var(--topPosition, var(--headerHeight));
     }
 
     @media @desktop {
@@ -1177,7 +1189,7 @@ export default {
     border-radius: 24px;
     border: none;
     position: fixed;
-    top: 125px;
+    top: calc(var(--topPosition, var(--headerHeight)) + 69px);
     right: 50%;
     transform: translateX(50%);
 

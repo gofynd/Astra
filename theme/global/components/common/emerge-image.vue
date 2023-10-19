@@ -3,14 +3,15 @@
     class="image-wrapper"
     :class="{ fill: getGlobalConfigValue(global_config, 'img_fill') }"
     :style="dynamicStyles"
+    ref="imgWrapper"
   >
     <div class="overlay" v-if="showOverlay" :style="getOverlayStyles" />
     <picture>
       <source
-        v-for="(source, index) in sources"
+        v-for="(source, index) in getSources"
         :key="index"
-        :media="getMedia(source)"
-        :srcset="getUrl(source.width, source.url)"
+        :media="source.media"
+        :srcset="source.srcset"
         type="image/webp"
       />
       <img
@@ -171,12 +172,41 @@ export default {
         return {};
       },
     },
+    isLazyLoaded: {
+      type: Boolean,
+      default: true,
+    },
+    blurWidth: {
+      type: Number,
+      default: 50,
+    },
   },
   data() {
     return {
       isError: false,
       isLoading: true,
+      isIntersecting: false,
+      observer: null,
     };
+  },
+  watch: {
+    isIntersecting(newVal) {
+      if (newVal) {
+        this.observer.unobserve(this.$refs.imgWrapper);
+      }
+    },
+  },
+  beforeMount() {
+    if (this.isLazyLoaded) {
+      this.observer = new IntersectionObserver((entries) => {
+        if (entries?.[0]?.isIntersecting) {
+          this.isIntersecting = true;
+        }
+      });
+    }
+  },
+  mounted() {
+    this.isLazyLoaded && this.observer.observe(this.$refs.imgWrapper);
   },
   computed: {
     dynamicStyles() {
@@ -195,6 +225,10 @@ export default {
       };
     },
     getSrc() {
+      const key = searchStringInArray(this.src, IMAGE_SIZES);
+      if (this.isLazyLoaded && !this.isIntersecting) {
+        return transformImage(this.src, key, this.blurWidth);
+      }
       if (this.isError) {
         return this.placeholder;
       } else {
@@ -207,6 +241,9 @@ export default {
     fallbackSrcset() {
       let url = this.src;
       if (this.getImageType.toLowerCase() === "gif") {
+        return "";
+      }
+      if (this.isLazyLoaded && !this.isIntersecting) {
         return "";
       }
 
@@ -224,10 +261,32 @@ export default {
         })
         .join(", ");
     },
+    getLazyLoadSources() {
+      return this.sources.map((source) => {
+        source.media = this.getMedia(source);
+        source.srcset = this.getUrl(
+          source.blurWidth ?? this.blurWidth,
+          source.url
+        );
+        return source;
+      });
+    },
+    getSources() {
+      if (this.isLazyLoaded && !this.isIntersecting) {
+        return this.getLazyLoadSources;
+      }
+      return this.getLazyLoadSources.map((source) => {
+        source.srcset = this.getUrl(source.width, source.url);
+        return source;
+      });
+    },
   },
   methods: {
     getGlobalConfigValue,
     onError() {
+      if (this.isLazyLoaded && !this.isIntersecting) {
+        return;
+      }
       this.isError = true;
       this.isLoading = false;
       this.$forceUpdate();
