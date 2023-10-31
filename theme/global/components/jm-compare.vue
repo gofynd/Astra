@@ -1,133 +1,144 @@
 <template>
   <div class="compare-page font-body">
     <!--Search Container-->
-    <transition mode="out-in" name="fade">
-      <div class="add-search-container" v-if="showPopup" key="search">
-        <div>
-          <fdk-compare-search
-            ref="compare-search"
-            class="search-box"
-            :pageSize="15"
-            :filter="{ l3_categories: firstCategory }"
-          >
-            <template slot-scope="searchData">
-              <div class="search-block">
-                <div class="search-header">
-                  <div class="add-search-title">Search Here</div>
-                  <div
-                    v-if="!checkIfEmptyCompareData"
-                    class="cross-btn"
-                    @click.stop="hideMenu"
-                  >
-                    <svg-wrapper :svg_src="'close'"></svg-wrapper>
-                  </div>
-                </div>
-                <div class="search-container">
-                  <input
-                    class="input-box"
-                    type="text"
-                    v-model="searchtext"
-                    @keydown.enter.prevent
-                    @keyup.enter="searchData.executeQuery(searchtext)"
-                    @input="(evt) => handleSearch(searchData, evt)"
-                    placeholder="Search Product here"
-                  />
-                  <svg-wrapper
-                    :svg_src="'search-black'"
-                    class="search-icon"
-                  ></svg-wrapper>
-                </div>
-              </div>
-              <div class="popularhdng">Add to compare</div>
-              <div class="notFound-block" v-if="searchData.noResults">
-                <div class="notFound h5">No Product Found</div>
-              </div>
-
-              <div
-                class="landingBestsellerHandest"
-                :class="{ 'search-results': showPopup }"
-                v-if="searchData.suggestions.length > 0"
-              >
+    <div
+      class="add-search-container"
+      v-bind:class="{ 'show-phone': showPopup }"
+      key="search"
+    >
+      <div>
+        <fdk-compare-search
+          ref="compare-search"
+          class="search-box"
+          :pageSize="15"
+          :filter="{ l3_categories: firstCategory }"
+        >
+          <template slot-scope="searchData">
+            <div class="search-block">
+              <div class="search-header">
+                <div class="add-search-title">Search Here</div>
                 <div
-                  class="whiteSmallRBox"
-                  v-for="(data, index) in getSearchFilteredData(
-                    searchData.suggestions
-                  )"
-                  :key="index"
+                  v-if="!checkIfEmptyCompareData"
+                  class="cross-btn"
+                  @click.stop="hideMenu"
                 >
-                  <fdk-compare-action class="add-to-compare-button">
-                    <template slot-scope="compare">
-                      <div
-                        class="media"
-                        @click="
-                          addCompareProducts(compare.addCompare, data.slug);
-                          clearSearch(searchData, data.slug);
-                        "
-                      >
-                        <div class="media-left">
-                          <emerge-image
-                            class="fill"
-                            :src="data.media.url"
-                            :sources="[{ width: 55 }]"
-                          />
-                        </div>
-                        <div class="media-left-name">{{ data.name }}</div>
-                      </div>
-                    </template>
-                  </fdk-compare-action>
+                  <svg-wrapper :svg_src="'close'"></svg-wrapper>
                 </div>
               </div>
-            </template>
-          </fdk-compare-search>
-        </div>
-      </div>
-
-      <!--Compared Products-->
-      <div class="compare-container" v-if="!showPopup" key="products">
-        <!-- Product List -->
-        <div class="product-list slider" ref="productContainerBig">
-          <div class="empty-state-cont">
-            <div
-              class="add-phone-button"
-              v-if="
-                compared_products?.data?.items?.length < 4 ||
-                compare_slugs.length === 0
-              "
-              @click="showAddPhone()"
-            >
-              <svg-wrapper :svg_src="'compare_arrows'" />
-              <div>Add Products To Compare</div>
+              <div class="search-container">
+                <input
+                  class="input-box"
+                  type="text"
+                  v-model="searchtext"
+                  @keydown.enter.prevent
+                  @keyup.enter="searchData.executeQuery(searchtext)"
+                  @input="(evt) => handleSearch(searchData, evt)"
+                  placeholder="Search Product here"
+                />
+                <svg-wrapper
+                  :svg_src="'search-black'"
+                  class="search-icon"
+                ></svg-wrapper>
+              </div>
             </div>
-            <!-- <p class="bullet">OR</p> -->
-          </div>
-          <template v-if="compared_products?.data?.items?.length > 0">
+            <div class="popularhdng">Add to compare</div>
+            <div class="notFound-block" v-if="searchData.noResults">
+              <div class="notFound h5">No Product Found</div>
+            </div>
+
             <div
-              v-for="(item, index) in compared_products.data.items"
-              :key="index"
-              class="product"
+              class="landingBestsellerHandest"
+              :class="{ 'search-results': showPopup }"
+              v-if="searchData.suggestions.length > 0"
             >
-              <div class="product-cont">
-                <div class="product-image-wrap">
-                  <fdk-compare-action class="cross-btn">
-                    <template slot-scope="compareAction">
-                      <div v-on:click="handleRemove(compareAction, item.slug)">
-                        <svg-wrapper :svg_src="'close'"></svg-wrapper>
+              <div
+                class="whiteSmallRBox"
+                v-for="(data, index) in getSearchFilteredData(
+                  searchData.suggestions
+                )"
+                :key="index"
+              >
+                <fdk-compare-action class="add-to-compare-button">
+                  <template slot-scope="compare">
+                    <div
+                      class="media"
+                      @click="
+                        addCompareProducts(compare.addCompare, data.slug);
+                        clearSearch(searchData, data.slug);
+                      "
+                    >
+                      <div class="media-left">
+                        <emerge-image
+                          class="fill"
+                          :src="data.media.url"
+                          :sources="[{ width: 55 }]"
+                        />
                       </div>
-                    </template>
-                  </fdk-compare-action>
+                      <div class="media-left-name">{{ data.name }}</div>
+                    </div>
+                  </template>
+                </fdk-compare-action>
+              </div>
+            </div>
+          </template>
+        </fdk-compare-search>
+      </div>
+    </div>
+
+    <!--Compared Products-->
+    <div class="compare-container" v-if="!showPopup" key="products">
+      <!-- Product List -->
+      <div class="product-list slider" ref="productContainerBig">
+        <div class="empty-state-cont">
+          <div
+            class="add-phone-button"
+            v-if="
+              compared_products?.data?.items?.length < 4 ||
+              compare_slugs.length === 0
+            "
+            @click="showAddPhone()"
+          >
+            <svg-wrapper :svg_src="'compare_arrows'" />
+            <div>Add Products To Compare</div>
+          </div>
+          <!-- <p class="bullet">OR</p> -->
+        </div>
+        <template v-if="compared_products?.data?.items?.length > 0">
+          <div
+            v-for="(item, index) in compared_products.data.items"
+            :key="index"
+            class="product"
+          >
+            <div class="product-cont">
+              <div class="product-image-wrap">
+                <fdk-compare-action class="cross-btn">
+                  <template slot-scope="compareAction">
+                    <div v-on:click="handleRemove(compareAction, item.slug)">
+                      <svg-wrapper :svg_src="'close'"></svg-wrapper>
+                    </div>
+                  </template>
+                </fdk-compare-action>
+                <fdk-link :link="`/product/${item.slug}`">
                   <emerge-image
+                    :aspectRatio="getProductImgAspectRatio"
+                    :mobileAspectRatio="getProductImgAspectRatio"
                     @click.stop="getProductLink(item)"
                     :src="item.medias.length > 0 ? item.medias[0].url : ''"
                     :sources="[{ width: 200 }]"
                   />
-                </div>
-                <div
-                  class="product-name"
-                  :title="item.name"
-                  @click.stop="getProductLink(item)"
-                >
-                  {{ item.name }}
-                </div>
+                </fdk-link>
+              </div>
+              <h5 class="product-brand font-body" v-if="item.brand.name">
+                {{ item.brand.name }}
+              </h5>
+              <div
+                class="product-name"
+                :title="item.name"
+                @click.stop="getProductLink(item)"
+              >
+                {{ item.name }}
+              </div>
+              <div class="product-price-wrapper">
                 <div class="price-effective">
                   {{ getPrice(item.price.effective) }}
                 </div>
@@ -141,7 +152,6 @@
                   }"
                 >
                   <span class="mrp-text">
-                    M.R.P
                     <span
                       :style="
                         global_config
@@ -152,79 +162,73 @@
                     >
                   </span>
                   <!-- <span class="save-text">
-                  Save:
-                  <span>{{ getPriceDifference(item.price) }}</span>
-                </span> -->
+                    Save:
+                    <span>{{ getPriceDifference(item.price) }}</span>
+                  </span> -->
                 </div>
-                <fdk-cart class="cart-wrapper">
-                  <template slot-scope="cart">
-                    <button
-                      class="button btn-secondary flex-center add-to-cart font-body"
-                      @click="addProductForCheckout(cart, false)"
-                      v-if="
-                        !getGlobalConfigValue('disable_cart') &&
-                        context?.product_meta?.sellable
-                      "
-                    >
-                      <svg-wrapper :svg_src="'cart'" class="cart-icon" />
-                      ADD TO CART
-                    </button>
-                  </template>
-                </fdk-cart>
               </div>
-            </div>
-          </template>
-        </div>
-
-        <!-- Attribute List -->
-        <div class="attribute-list">
-          <div
-            class="attribute"
-            v-if="compared_products?.data?.items?.length > 0"
-          >
-            <div
-              v-for="(attributes_metadata, id) in compared_products?.data
-                ?.attributes_metadata"
-              :key="id"
-            >
-              <!-- JC: hiding title <div class="attr-title">{{ attributes_metadata.title }}</div> -->
-              <div
-                v-for="(attribute, aid) in attributes_metadata.details"
-                :key="'cl' + id + aid"
-                class="attr-list-wrap"
-              >
-                <div
-                  class="attr-name align-attribute"
-                  :class="{ differ: isDifferent(attribute) }"
-                >
-                  {{ attribute.display }}
-                </div>
-                <div class="attr-desc slider">
-                  <!-- @touchmove="swipeHandler($event, 'attrDesc')"
-                @touchstart="startTouch($event, 'attrDesc')" -->
-                  <div
-                    v-for="(cProduct, id) in compared_products.data.items"
-                    :key="'cp' + id"
-                    class="attr-desc-name align-attribute"
+              <fdk-cart class="cart-wrapper">
+                <template slot-scope="cart">
+                  <button
+                    class="button btn-secondary flex-center add-to-cart font-body"
+                    @click="addProductForCheckout(cart, false)"
+                    v-if="
+                      !getGlobalConfigValue('disable_cart') &&
+                      context?.product_meta?.sellable
+                    "
                   >
-                    <img :src="attribute.logo" alt />
-                    <span
-                      class="attr"
-                      v-if="checkHtml(getAttribute(cProduct, attribute))"
-                      style="text-align: left"
-                      v-html="getAttribute(cProduct, attribute)"
-                    ></span>
-                    <span class="attr" v-else>
-                      {{ getAttribute(cProduct, attribute) }}
-                    </span>
-                  </div>
-                </div>
+                    <svg-wrapper :svg_src="'cart'" class="cart-icon" />
+                    ADD TO CART
+                  </button>
+                </template>
+              </fdk-cart>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Attribute List -->
+      <div class="attribute-list">
+        <div
+          class="attribute"
+          v-if="compared_products?.data?.items?.length > 0"
+        >
+          <div
+            v-for="(attributes_metadata, id) in compared_products?.data
+              ?.attributes_metadata"
+            :key="id"
+          >
+            <!-- JC: hiding title <div class="attr-title">{{ attributes_metadata.title }}</div> -->
+            <div
+              v-for="(attribute, aid) in attributes_metadata.details"
+              :key="'cl' + id + aid"
+              class="attr-list-wrap"
+            >
+              <div
+                class="attr-name align-attribute"
+                :class="{ differ: isDifferent(attribute) }"
+              >
+                {{ attribute.display }}
+              </div>
+              <div
+                v-for="(cProduct, id) in compared_products.data.items"
+                :key="'cp' + id"
+                class="attr-desc-name align-attribute"
+              >
+                <span
+                  class="attr"
+                  v-if="checkHtml(getAttribute(cProduct, attribute))"
+                  style="text-align: left"
+                  v-html="getAttribute(cProduct, attribute)"
+                ></span>
+                <span class="attr" v-else>
+                  {{ getAttribute(cProduct, attribute) }}
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <!--Error Message-->
       <div
         class="error-message attr"
@@ -232,25 +236,23 @@
       >
         *You can only add four products at a time
       </div>
-    </transition>
+    </div>
+
     <toast :id="'toast-message'" :content="toast_message"></toast>
   </div>
 </template>
 
 <script>
-import { checkHtml } from "./../../helper/utils";
+import { checkHtml, getProductImgAspectRatio } from "./../../helper/utils";
 import { getGlobalConfigValue } from "./../../helper/utils";
 import toast from "../../components/common/toast.vue";
 import emergeImage from "../../global/components/common/emerge-image.vue";
 import SvgWrapper from "./../../components/common/svg-wrapper.vue";
-
-import BreadCrumb from "../../components/product-description/breadcrumb.vue";
 export default {
   components: {
     toast,
     "emerge-image": emergeImage,
     "svg-wrapper": SvgWrapper,
-    "bread-crumb": BreadCrumb,
   },
   data: function data() {
     return {
@@ -293,7 +295,7 @@ export default {
     addCompareProducts(promiseFn, product_slug) {
       this.showPopup = false;
       window.scrollTo(0, 0);
-      if (this.compare_slugs.length < 4) {
+      if (this.compare_slugs.length < 5) {
         promiseFn(product_slug)
           .then((res) => {})
           .catch((err) => {
@@ -399,12 +401,12 @@ export default {
     },
     getPrice(price) {
       if (price.min === price.max) {
-        return this.$options.filters.currencyformat(price.min.toFixed(2));
+        return this.$options.filters.currencyformat(price.min);
       }
       return (
-        this.$options.filters.currencyformat(price.min.toFixed(2)) +
+        this.$options.filters.currencyformat(price.min) +
         " - " +
-        this.$options.filters.currencyformat(price.max.toFixed(2))
+        this.$options.filters.currencyformat(price.max)
       );
     },
   },
@@ -419,6 +421,9 @@ export default {
     firstCategory() {
       let products = this.compared_products?.data?.items;
       return products?.[0]?.categories?.[0]?.uid;
+    },
+    getProductImgAspectRatio() {
+      return getProductImgAspectRatio(this.global_config);
     },
   },
   watch: {
@@ -521,7 +526,7 @@ export default {
   top: 60px;
   align-self: flex-start;
   width: 100%;
-  display: block;
+  display: none;
   .search-box {
     .cross-btn {
       top: 10px;
@@ -545,29 +550,28 @@ export default {
   width: 100%;
   overflow-x: auto;
   .product-list {
-    display: flex;
-    margin-left: auto;
+    // display: flex;
+    // margin-left: auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 2%;
-    @media @tablet {
-      gap: 16px;
-    }
     @media @mobile {
       gap: 8px;
     }
     .product {
       position: relative;
-      width: 231px;
+      // width: 231px;
       box-sizing: border-box;
-      @media @tablet {
-        width: 132px;
-      }
+      // @media @tablet {
+      //   width: 132px;
+      // }
       @media @mobile {
         width: 140px;
         flex: 0 0 140px;
       }
       .product-cont {
-        display: flex;
-        flex-direction: column;
+        // display: flex;
+        // flex-direction: column;
 
         .cross-btn {
           cursor: pointer;
@@ -591,26 +595,36 @@ export default {
           }
         }
         .product-image-wrap {
+          margin-bottom: 12px;
           /deep/ .fy__img {
             height: 100%;
+            object-fit: cover !important;
           }
           /deep/ .image-wrapper {
-            border-radius: 24px;
+            border-radius: @ImageRadius;
           }
         }
-
+        .product-brand {
+          margin-bottom: 4px;
+          color: @TextBody;
+        }
         .product-name {
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
           line-height: 20px;
-          margin-top: 12px;
           font-size: 12px;
           font-weight: 600;
           letter-spacing: -0.28px;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
-          color: @TextBody;
+          color: @TextHeading;
+          cursor: pointer;
+        }
+        .product-price-wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          .column-gap(8px);
         }
         .price-effective {
           margin: 4px 0 0 0;
@@ -632,19 +646,17 @@ export default {
     }
     .empty-state-cont {
       position: relative;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
       text-align: center;
-      justify-content: center;
-      width: 231px;
       height: auto;
+      cursor: pointer;
+      min-height: 300px;
       @media @tablet {
-        width: 132px;
+        min-height: 220px;
       }
       @media @mobile {
         flex: 0 0 140px;
         width: 140px;
+        min-height: 228px;
       }
 
       .add-phone-button {
@@ -660,21 +672,11 @@ export default {
         border: 0.8px solid @ButtonPrimary;
         -webkit-justify-content: center;
         -webkit-align-items: center;
-        @media @tablet {
-          padding: 12px 8px;
-          display: flex;
-          display: -webkit-flex;
-          justify-content: center;
-          -webkit-justify-content: center;
-          align-items: center;
-          -webkit-align-items: center;
-        }
         & > .inline-svg {
           width: 48px;
           height: 48px;
         }
         img {
-          //width: 50px;
           margin-bottom: 10px;
         }
       }
@@ -689,73 +691,44 @@ export default {
     @media @mobile {
       margin-top: 24px;
     }
-    .attribute {
-      text-align: center;
-      // .attr-title {
-      //   font-weight: bold;
-      //   padding: 15px 0;
-      //   border-bottom: 1px solid #cecece;
-      //   width: 75%;
-      //   margin-left: auto;
-      //   @media @mobile {
-      //     width: 100%;
-      //   }
-    }
+
     .attr-list-wrap {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
       @media @mobile {
         display: flex;
       }
     }
     .attr-name {
-      width: 235px;
       line-height: 20px;
       font-weight: 700;
       align-self: stretch;
       background-color: @ThemeAccentL2;
       border-bottom: 1px solid @DividerStokes;
-      @media @tablet {
-        min-width: 135px;
-        width: 135px;
-      }
       @media @mobile {
         flex: 0 0 149px;
       }
     }
-    .attr-desc {
-      display: flex;
+    .attr-desc-name {
       background-color: @ThemeAccentL3;
-      align-self: stretch;
+      border-bottom: 1px solid var(--dividerStokes, #d4d1d1);
       @media @mobile {
-        width: 100%;
+        background: inherit;
+        flex: 0 0 140px;
+        background-color: @ThemeAccentL3;
       }
-      .attr-desc-name {
-        width: 260px;
-        border-bottom: 1px solid var(--dividerStokes, #d4d1d1);
+      span {
+        word-wrap: break-word;
+        line-height: 20px;
         @media @tablet {
-          width: 148px;
-        }
-        @media screen and (max-width: 1023px) {
-          width: 231px;
+          max-width: 150px;
         }
         @media @mobile {
-          background: inherit;
-          flex: 0 0 140px;
+          max-width: 100px;
         }
-        span {
-          word-wrap: break-word;
-          line-height: 20px;
-          @media @tablet {
-            max-width: 150px;
-          }
-          @media @mobile {
-            max-width: 100px;
-          }
-        }
-        &:last-child {
-          border-right: 0;
-        }
+      }
+      &:last-child {
+        border-right: 0;
       }
     }
   }
@@ -858,34 +831,6 @@ export default {
   }
 }
 
-.product-list-small {
-  display: none;
-  box-shadow: 0px 3px 6px #00000029;
-  width: 75%;
-  margin-left: auto;
-  @media @mobile {
-    display: flex;
-    width: 100%;
-  }
-
-  .empty-state-cont {
-    position: relative;
-    margin: auto;
-    text-align: center;
-    min-height: 100px;
-    @media @tablet {
-      //flex: 0 0 140px;
-    }
-
-    img {
-      width: 20%;
-      @media @tablet {
-        display: none;
-      }
-    }
-  }
-}
-
 .search-container {
   display: flex;
   align-items: center;
@@ -949,12 +894,6 @@ export default {
 .attr {
   font-size: 14px;
 }
-
-// .differ {
-//   background: #f8f8f8;
-//   color: #000000 !important;
-// }
-
 .compare-container::-webkit-scrollbar {
   display: none;
 }
@@ -963,12 +902,14 @@ export default {
   width: 20%;
 }
 .align-attribute {
-  min-width: 149px;
-  min-height: 53px;
-  display: flex;
-  align-items: center;
   padding: 16px;
   text-align: left;
+  @media @mobile {
+    min-width: 149px;
+    min-height: 53px;
+    display: flex;
+    align-items: center;
+  }
 }
 .d-flex {
   display: flex;

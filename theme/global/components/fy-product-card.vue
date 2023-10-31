@@ -107,7 +107,7 @@
           >
           <span
             class="product-price--discount caption-normal"
-            v-if="hasDiscount"
+            v-if="product.discount"
             >({{ product.discount }})</span
           >
         </div>

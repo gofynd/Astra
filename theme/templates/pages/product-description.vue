@@ -182,10 +182,12 @@
                 </div>
               </div>
 
-              <div v-if="isSizeSelectionBlock" class="size-selection">
+              <div
+                v-if="isSizeSelectionBlock && getProductSizes.length"
+                class="size-selection"
+              >
                 <p class="b2 size-selection__label">
                   <span>Size :</span>
-                  {{ selectedSize }}
                 </p>
                 <div class="size-selection__wrapper">
                   <div
@@ -376,7 +378,7 @@
             :addProductForCheckout="addProductForCheckout"
           ></compare-action-modal>
           <div class="book-appt-n-compare">
-            <!-- <fdk-compare-action
+            <fdk-compare-action
               v-if="page_config && page_config.props.add_to_compare"
             >
               <template slot-scope="compare">
@@ -395,7 +397,7 @@
                   <p>Add to Compare</p>
                 </div>
               </template>
-            </fdk-compare-action> -->
+            </fdk-compare-action>
           </div>
 
           <ul class="product-detail font-body">
@@ -460,7 +462,13 @@
       "label": "Seller Store Selection",
       "default": true
     },
-   
+    {
+      "type": "checkbox",
+      "id": "add_to_compare",
+      "label": "Add to Compare",
+      "default": true,
+      "info": "Allow comparison of products"
+    },
     {
       "type": "checkbox",
       "id": "show_seller",
@@ -748,7 +756,6 @@ export default {
     },
   },
   mounted() {
-    console.log("Categories=>", this.context);
     this.observer = new IntersectionObserver(this.onAddToCartIntersection, {
       threshold: 1.0,
     });
@@ -1190,6 +1197,10 @@ export default {
       }
     },
     addCompareProducts(promiseFn, productUid) {
+      if (this.context.compare_slugs.includes(this.context.product.slug)) {
+        this.$router.push(`/compare`);
+        return;
+      }
       if (this.context.compare_slugs.length <= 3) {
         promiseFn(productUid)
           .then((res) => {
@@ -1495,7 +1506,7 @@ export default {
 .size-cart-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  margin-top: 24px;
 
   .size-wrapper {
     position: relative;
@@ -1757,7 +1768,7 @@ export default {
 }
 
 .size-selection {
-  margin: 24px 0;
+  margin: 24px 0 16px 0;
 
   &__label {
     margin-bottom: 12px;

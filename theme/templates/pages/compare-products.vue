@@ -1,20 +1,26 @@
 <template>
   <div class="container font-body">
-    <!-- <div class="breadcrumbs caption-normal">
+    <div class="breadcrumbs caption-normal">
       <span><fdk-link :link="'/'">Home</fdk-link>&nbsp;/&nbsp;</span>
       <span>
         <fdk-link :link="'/products'">Products</fdk-link>&nbsp;/&nbsp;</span
       >
-      <span v-if="getBrand.name">
+      <span v-if="getCategory.name">
+        <fdk-link :link="`${getCategory.url || '/'}`">{{
+          getCategory.name
+        }}</fdk-link
+        >&nbsp;/&nbsp;</span
+      >
+      <!-- <span v-if="getBrand.name">
         <fdk-link :link="`${getBrand.logo.url || '/'}`">{{
           getBrand.name
         }}</fdk-link
         >&nbsp;/&nbsp;</span
-      >
+      > -->
       <span class="breadcrumbs comparecrumb">
-        <fdk-link :link="'/compare'">Compare Products</fdk-link>&nbsp;</span
+        <span class="active-product">Compare Products</span></span
       >
-    </div> -->
+    </div>
     <div class="compare-header font-header h1">Compare Products</div>
     <jm-compare
       :context="context"
@@ -57,7 +63,9 @@ export default {
   },
   computed: {
     getCategory() {
-      const category = this.context?.product?.categories?.[0] || {};
+      const category =
+        this.context?.compared_products?.data?.items?.[0]?.categories?.[0] ||
+        {};
       let updatedCategory = {};
       const categorySlug = category?.action?.page?.query?.category?.[0] || "";
 

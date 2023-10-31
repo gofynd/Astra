@@ -7,14 +7,22 @@
           "settings": {
             "props": {
               "reviews": false,
-              "add_to_compare": false,
+              "add_to_compare": true,
               "product_request": false,
               "store_selection": true,
               "compare_products": false,
               "variants": true,
               "ratings": false,
               "similar_products": true,
-              "bulk_prices": false
+              "bulk_prices": false,
+              "mandatory_pincode": false,
+              "hide_single_size": true,
+              "preselect_size": false,
+              "badge_url_1": "",
+              "badge_url_2": "",
+              "badge_url_3": "",
+              "badge_url_4": "",
+              "badge_url_5": ""
             }
           },
           "page": "product-description"
@@ -22,8 +30,11 @@
         {
           "settings": {
             "props": {
+              "show_info_message": true,
               "gst": false,
-              "staff_selection": true
+              "staff_selection": true,
+              "enable_customer": false,
+              "enable_guest": false
             }
           },
           "page": "cart-landing"
@@ -41,10 +52,27 @@
         {
           "settings": {
             "props": {
-              "hide_brand": true
+              "hide_brand": false,
+              "product_number": false,
+              "loading_options": "view_more",
+              "back_top": true,
+              "in_new_tab": true,
+              "grid_desktop": "desktop-grid-4"
             }
           },
           "page": "product-listing"
+        },
+        {
+          "settings": {
+            "props": {
+              "back_top": true,
+              "in_new_tab": true,
+              "hide_brand": false,
+              "product_number": false,
+              "loading_options": "pagination"
+            }
+          },
+          "page": "collection-listing"
         }
       ],
       "global_config": {
@@ -65,8 +93,8 @@
             "palette": {
               "general_setting": {
                 "theme": {
-                  "page_background": "#fff9f3",
-                  "theme_accent": "#bea5a9"
+                  "page_background": "#ffffff",
+                  "theme_accent": "#d9d9d4"
                 },
                 "text": {
                   "text_heading": "#000507",
@@ -75,14 +103,14 @@
                   "text_secondary": "#678391"
                 },
                 "button": {
-                  "button_primary": "#023047",
-                  "button_secondary": "#ffffff",
+                  "button_primary": "#413e3e",
+                  "button_secondary": "#fffafa",
                   "button_link": "#552531"
                 },
                 "sale_discount": {
-                  "sale_badge_background": "#f1faee",
+                  "sale_badge_background": "#ffffff",
                   "sale_badge_text": "#410102",
-                  "sale_discount_text": "#1867b0",
+                  "sale_discount_text": "#cd4242",
                   "sale_timer": "#e63946"
                 },
                 "header": {
@@ -91,11 +119,11 @@
                   "header_icon": "#000507"
                 },
                 "footer": {
-                  "footer_background": "#023047",
-                  "footer_bottom_background": "#022a3f",
-                  "footer_heading_text": "#f9f6f6",
-                  "footer_body_text": "#FFFFFF",
-                  "footer_icon": "#FFFFFF"
+                  "footer_background": "#ffffff",
+                  "footer_bottom_background": "#d1d1d1",
+                  "footer_heading_text": "#353131",
+                  "footer_body_text": "#514d4d",
+                  "footer_icon": "#423e3e"
                 }
               },
               "advance_setting": {
@@ -104,7 +132,7 @@
                   "overlay": "#010e15"
                 },
                 "divider_stroke_highlight": {
-                  "divider_strokes": "#f2edee",
+                  "divider_strokes": "#1a1a1a",
                   "highlight": "#dfd2d4"
                 },
                 "user_alerts": {
@@ -142,9 +170,9 @@
             "menu_layout_desktop": "layout_3",
             "logo": "https://cdn.pixelbin.io/v2/falling-surf-7c8bb8/fyndnp/wrkr/addsale/company/13619/applications/6426d6d07413f975950390fc/theme/pictures/free/original/theme-image-1680268022124.png",
             "logo_width": 774,
-            "footer_description": "Astra is designed to create a seamless shopping experience for your customers. With a responsive layout and customizable options, you can showcase your products in a way that truly reflects your brand’s personality. The theme is optimized for speed and SEO, ensuring your website is not only visually appealing but also ranks well on search engines.",
-            "logo_menu_alignment": "layout_4",
-            "header_layout": "double",
+            "footer_description": "",
+            "logo_menu_alignment": "layout_2",
+            "header_layout": "single",
             "section_margin_top": 89,
             "font_header": {
               "variants": {
@@ -197,7 +225,13 @@
               "family": "Work Sans"
             },
             "section_margin_bottom": 16,
-            "payments_logo": "https://cdn.pixelbin.io/v2/falling-surf-7c8bb8/fyndnp/wrkr/addsale/company/13619/applications/6426d6d07413f975950390fc/theme/pictures/free/original/theme-image-1680268777553.png"
+            "payments_logo": "https://cdn.pixelbin.io/v2/falling-surf-7c8bb8/fyndnp/wrkr/addsale/company/13619/applications/6426d6d07413f975950390fc/theme/pictures/free/original/theme-image-1680268777553.png",
+            "img_fill": true,
+            "show_sale_badge": false,
+            "product_img_width": "300",
+            "product_img_height": "1000",
+            "image_border_radius": 4,
+            "button_border_radius": 22
           }
         }
       }
