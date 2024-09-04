@@ -1,92 +1,33 @@
-# ASTRA Theme
+
+# Astra
+
+[Getting started](#getting-started) |
+[Developer tools](#developer-tools) |
+[Theme Marketplace submission](#theme-marketplace-submission) |
 
 
+Astra represents a HTML-first, JavaScript-only-as-needed approach to theme development. It's Fynd Platform's Vue JS (v2) based source theme with performance, flexibility, and [Fynd Platform features](https://platform.fynd.com/help/docs/introduction/what-is-fp) built-in and acts as a reference for building Fynd Platform themes.
+
+* **Web-native in its purest form:** Themes run on the [evergreen web](https://www.w3.org/2001/tag/doc/evergreen-web/). We leverage the latest web browsers to their fullest, while maintaining support for the older ones through progressive enhancement—not polyfills.
+* **Lean, fast, and reliable:** Functionality and design defaults to “no” until it meets this requirement. Code ships on quality. Themes must be built with purpose. They shouldn’t support each and every feature in Fynd Platform.
+* **Server-rendered:** HTML must be rendered by Fynd Platform servers using Vue. Business logic and platform primitives such as translations and money formatting don’t belong on the client. Async and on-demand rendering of parts of the page is OK, but we do it sparingly as a progressive enhancement.
+* **SPA (Single Page Application):** The architecture should follow SPA principles, ensuring smooth transitions between views without full page reloads. This enhances user experience by making the application feel faster and more responsive.
+* **Functional, not pixel-perfect:** The Web doesn’t require each page to be rendered pixel-perfect by each browser engine. Using semantic markup, progressive enhancement, and clever design, we ensure that themes remain functional regardless of the browser.
 
 ## Getting started
+We recommend using Fynd Platform as a starting point for theme development. [Learn more on partners.fynd.com](https://partners.fynd.com/help/docs/partners/themes/vuejs/getting-started).
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+> If you're building a Vue 2 powered theme for the Fynd Theme Marketplace, then you can use Astra as a starting point. However, the theme that you submit needs to be [substantively different from Emerge]https://partners.fynd.com/help/docs/partners/themes/vuejs/theme-mp) so that it provides added value for merchants.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Developer tools
 
-## Add your files
+### FDK CLI
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+[FDK CLI](https://github.com/gofynd/fdk-cli) helps you build Fynd Platform themes and is used to enhance your local development workflow. It comes bundled with a suite of commands for developing Fynd Platform themes - everything from working with themes on [Fynd Themes](https://themes.fynd.com) (e.g. creating new theme, initializing exisiting theme, publishing new theme, switching between themes) or launching a development server for local theme development.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/fynd/regrowth/fynd-platform/frontend/web/platform-themes/emerge.git
-git branch -M master
-git push -uf origin master
-```
+You can follow this [quick start guide for theme developers](https://partners.fynd.com/help/docs/partners/themes/vuejs/fdk-cli) to get started.
 
-## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.com/fynd/regrowth/fynd-platform/frontend/web/platform-themes/emerge/-/settings/integrations)
+## Theme Marketplace submission
 
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+The [Fynd Theme Marketplace](https://themes.fynd.com) is the place where Fynd Platform merchants find the themes that they'll use to showcase and support their business. As a theme partner, you can create themes for the Fynd Platform Theme Store and reach an international audience of an ever-growing number of entrepreneurs.
